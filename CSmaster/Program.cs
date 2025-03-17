@@ -119,16 +119,19 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-
-        int[] arr = new int[] { 1, 1, 2, 2, 3, 3, 4,55,6,7,7,7,8,9,9,9 };
+        int[] arr1 = new int[] { 1 };
+        int[] arr = new int[] { 1, 1, 2, 2, 3, 3, 4, 55, 6, 7, 7, 7, 8, 9, 9, 9 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        //prb.RecursiveInsertion(arr,i,n);
+        //prb.RecursiveInsertion(arr, i, n);
         //Console.WriteLine("Sorted array: " + string.Join(", ", arr));
+
+        prb.RemoveZeros2(arr1);
+        Console.WriteLine("romoved zeros: " + string.Join(", ", arr1));
 
         //Console.WriteLine($"Second largest element is : {prb.SecondLargest(arr)}");
         //int[] result = prb.RemoveDuplicate2(arr);
@@ -137,8 +140,8 @@ public class Problems
 
 
         //List<int> arr = new List<int> {0,5,6,7,8,9,12,45};
-        int result = prb.RemoveDuplicate2(arr);
-        Console.WriteLine(result);
+        //int[] result = prb.Rotate1(arr1,3);
+        //Console.WriteLine(result);
 
         //foreach (int i in result)
         //{
@@ -919,7 +922,108 @@ public class Problems
                 i++;
             }
         }
-        return i+1;
+        return i + 1;
+    }
+
+    #region
+    //Left Rotate by K places
+
+    //Brute solution
+    public void Rotate1(int[] arr, int k)
+    {
+
+        int n = arr.Length;
+        k = k % n;
+        int[] temp = new int[k];
+        //store the value in temp
+        for (int i = 0; i < k; i++)
+        {
+            temp[i] = arr[i];
+        }
+        //rotate by left
+        for (int i = k; i < n; i++)
+        {
+            arr[i - k] = arr[i];
+        }
+        //Put back to the array
+        for (int i = n - k; i < n; i++)
+        {
+            arr[i] = temp[i - (n - k)];
+        }
+
+    }
+
+    //Optimized solution
+    public void Rotate2(int[] arr, int k)
+    {
+        int n = arr.Length;
+        k = k % n;
+        Array.Reverse(arr, 0, k);
+        Array.Reverse(arr, k, n - k);
+        Array.Reverse(arr, 0, n);
+    }
+
+    //Right Rotate by k places 
+    public void Rotate3(int[] arr, int k)
+    {
+        int n = arr.Length;
+        k = k % n;
+        Array.Reverse(arr);
+        Array.Reverse(arr, 0, k);
+        Array.Reverse(arr, k, n - k);
+    }
+    #endregion
+
+    //Brute soln  TC= 0(n) +O(x)+ O(n-x) = O(2n)
+    public void RemoveZeros(int[] arr) //[1,3,0,5,0,6]
+    {
+        int n = arr.Length;
+        int[] temp=new int[n];
+        int j = 0;
+        //Take all the non-zero numbers and place it in the temp array
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] != 0) { temp[j] = arr[i]; j++; }
+        }
+
+        //Step2:Replace all the temp values i.e.non-zero values to the front of an array
+        for (int i = 0; i < temp.Length; i++)
+        {
+            arr[i] = temp[i];
+        }
+
+        //Step3:Allocate the remaining place of arr to zeros
+        for (int i = j + 1; i < n; i++)
+        {
+            arr[i] = 0;
+        }
+    }
+
+    //Optimized Soln
+    public void RemoveZeros2(int[] arr) //tc = O(x) , O(n-x) = O(x)+O(n-x)=O(n) ; SC=O(1)
+    {
+        int n = arr.Length;
+        int j = -1;
+        for (int i = 1; i<n-1; i++) 
+        {
+            if (arr[i] == 0 ) 
+            {
+                j = i;
+                break;
+            }
+        }
+
+        if (j == -1) return;
+        for (int i = j + 1; i < n ; i++) 
+        {
+            if (arr[i] != 0) 
+            {
+                int temp =arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                j++;
+            }
+        }  
     }
 }
 
