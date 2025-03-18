@@ -119,8 +119,8 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr1 = new int[] { 1 };
-        int[] arr = new int[] { 1, 1, 2, 2, 3, 3, 4, 55, 6, 7, 7, 7, 8, 9, 9, 9 };
+        int[] arr1 = new int[] { 2,2,3,4,5};
+        int[] arr = new int[] { 1, 1, 2, 3,4 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
@@ -130,8 +130,8 @@ public class Problems
         //prb.RecursiveInsertion(arr, i, n);
         //Console.WriteLine("Sorted array: " + string.Join(", ", arr));
 
-        prb.RemoveZeros2(arr1);
-        Console.WriteLine("romoved zeros: " + string.Join(", ", arr1));
+        //prb.RemoveZeros2(arr1);
+        //Console.WriteLine("romoved zeros: " + string.Join(", ", arr1));
 
         //Console.WriteLine($"Second largest element is : {prb.SecondLargest(arr)}");
         //int[] result = prb.RemoveDuplicate2(arr);
@@ -140,13 +140,13 @@ public class Problems
 
 
         //List<int> arr = new List<int> {0,5,6,7,8,9,12,45};
-        //int[] result = prb.Rotate1(arr1,3);
+        int[] result = prb.Union2(arr, arr1);
         //Console.WriteLine(result);
 
-        //foreach (int i in result)
-        //{
-        //    Console.WriteLine(" " + i);
-        //}
+        foreach (int i in result)
+        {
+            Console.WriteLine(" " + i);
+        }
 
 
 
@@ -1025,5 +1025,71 @@ public class Problems
             }
         }  
     }
-}
 
+
+    //Brute -- Using SortedSet
+    public int[] Union(int[] nums1, int[] nums2) 
+    {
+        int[] union;
+        SortedSet<int> set = new SortedSet<int>();
+        foreach (int i in nums1) 
+        {
+            set.Add(i);
+        }
+        foreach (int j in nums2) 
+        {
+            set.Add(j);
+        }
+        return set.ToArray();
+    }
+
+
+    //int[] arr1 = new int[] { 2,2,3,4,5};
+    //int[] arr = new int[] { 1, 1, 2, 3, 4 };
+    public int[] Union2(int[] arr,int [] arr1) 
+    {
+        int n=arr.Length;
+        int n1 = arr1.Length;
+        int i= 0;
+        int j = 0;
+        List<int> union=new List<int>();
+        while (i < n && j < n1)
+        {
+            if (arr[i] <= arr1[j])
+            {
+                if (union.Count == 0 || union[^1] != arr[i])
+                {
+                    union.Add(arr[i]);
+                }
+                i++;
+            }
+            else
+            {
+                if (union.Count == 0 || union[^1] != arr1[j])
+                {
+                    union.Add(arr[j]);
+                }
+                j++;
+            }
+        }
+            while (i < n) 
+            {
+                if (union.Count == 0 || union[^1] != arr[i])
+                {
+                    union.Add(arr[i]);
+                }
+                i++;
+            }
+            while(j < n1) 
+            {
+                if (union.Count == 0 || union[^1] != arr1[j])
+                {
+                    union.Add(arr1[j]);
+                }
+                j++;
+            }
+        
+        return union.ToArray();
+    }//TC==O(n1+n2) and SC =O(n1+n2)
+    
+}
