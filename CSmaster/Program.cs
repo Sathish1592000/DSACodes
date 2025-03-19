@@ -119,8 +119,9 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr1 = new int[] { 2,2,3,4,5};
-        int[] arr = new int[] { 1, 1, 2, 3,4 };
+        int[] arr = new int[] { 1, 1, 2, 3, 4 };
+        int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
+        int[] arr2 = new int[] { 1, 3, 4, 5};
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
@@ -140,14 +141,16 @@ public class Problems
 
 
         //List<int> arr = new List<int> {0,5,6,7,8,9,12,45};
-        int[] result = prb.Union2(arr, arr1);
-        //Console.WriteLine(result);
+        //int[] result = prb.Intersection(arr, arr1);
+        ////Console.WriteLine(result);
 
-        foreach (int i in result)
-        {
-            Console.WriteLine(" " + i);
-        }
+        //foreach (int i in result)
+        //{
+        //    Console.WriteLine(" " + i);
+        //}
 
+        int result1=prb.MissingNumber(arr2);
+        Console.WriteLine("missing number is : "+result1);
 
 
         //Console.WriteLine(prb.EuclideanMeth(12,15));
@@ -978,7 +981,7 @@ public class Problems
     public void RemoveZeros(int[] arr) //[1,3,0,5,0,6]
     {
         int n = arr.Length;
-        int[] temp=new int[n];
+        int[] temp = new int[n];
         int j = 0;
         //Take all the non-zero numbers and place it in the temp array
         for (int i = 0; i < n; i++)
@@ -1004,9 +1007,9 @@ public class Problems
     {
         int n = arr.Length;
         int j = -1;
-        for (int i = 1; i<n-1; i++) 
+        for (int i = 1; i < n - 1; i++)
         {
-            if (arr[i] == 0 ) 
+            if (arr[i] == 0)
             {
                 j = i;
                 break;
@@ -1014,45 +1017,44 @@ public class Problems
         }
 
         if (j == -1) return;
-        for (int i = j + 1; i < n ; i++) 
+        for (int i = j + 1; i < n; i++)
         {
-            if (arr[i] != 0) 
+            if (arr[i] != 0)
             {
-                int temp =arr[i];
+                int temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
                 j++;
             }
-        }  
+        }
     }
 
 
     //Brute -- Using SortedSet
-    public int[] Union(int[] nums1, int[] nums2) 
+    public int[] Union(int[] nums1, int[] nums2)
     {
         int[] union;
         SortedSet<int> set = new SortedSet<int>();
-        foreach (int i in nums1) 
+        foreach (int i in nums1)
         {
             set.Add(i);
         }
-        foreach (int j in nums2) 
+        foreach (int j in nums2)
         {
             set.Add(j);
         }
         return set.ToArray();
     }
 
-
-    //int[] arr1 = new int[] { 2,2,3,4,5};
     //int[] arr = new int[] { 1, 1, 2, 3, 4 };
-    public int[] Union2(int[] arr,int [] arr1) 
+    //int[] arr1 = new int[] { 2,2,3,4,5};
+    public int[] Union2(int[] arr, int[] arr1)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int n1 = arr1.Length;
-        int i= 0;
+        int i = 0;
         int j = 0;
-        List<int> union=new List<int>();
+        List<int> union = new List<int>();
         while (i < n && j < n1)
         {
             if (arr[i] <= arr1[j])
@@ -1072,24 +1074,60 @@ public class Problems
                 j++;
             }
         }
-            while (i < n) 
+        while (i < n)
+        {
+            if (union.Count == 0 || union[^1] != arr[i])
             {
-                if (union.Count == 0 || union[^1] != arr[i])
-                {
-                    union.Add(arr[i]);
-                }
-                i++;
+                union.Add(arr[i]);
             }
-            while(j < n1) 
+            i++;
+        }
+        while (j < n1)
+        {
+            if (union.Count == 0 || union[^1] != arr1[j])
             {
-                if (union.Count == 0 || union[^1] != arr1[j])
-                {
-                    union.Add(arr1[j]);
-                }
-                j++;
+                union.Add(arr1[j]);
             }
-        
+            j++;
+        }
+
         return union.ToArray();
     }//TC==O(n1+n2) and SC =O(n1+n2)
-    
+
+    public int[] Intersection(int[] a, int[] b) //TC=O(n1+n2) SC=O(1)
+    {
+        int n1 = a.Length;
+        int n2 = b.Length;
+        int i = 0;
+        int j = 0;
+        List<int> intersect = new List<int>();
+        while(n1>i && n2 > j) 
+        {
+            if (a[i] < b[j]) 
+            {
+                i++;
+            }
+            else if (b[j] < a[i]) 
+            {
+                j++;
+            }
+            else {
+                intersect.Add(a[i]);
+                i++;j++;
+            }
+        }
+        return intersect.ToArray();
+    }
+
+    public int MissingNumber(int[] a) 
+    {
+        int n = a.Length;
+        int sum2 = 0;
+        for (int i = 0; i < n - 1; i++) 
+        {
+            sum2 += a[i];
+        }
+        return sum1 - sum2;
+    }
+
 }
