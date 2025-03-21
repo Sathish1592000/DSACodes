@@ -119,9 +119,10 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 1, 1, 2, 3, 4 };
+        int[] arr = new int[] { 1, 2, 3, 4,5};
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5};
+        int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
@@ -131,8 +132,8 @@ public class Problems
         //prb.RecursiveInsertion(arr, i, n);
         //Console.WriteLine("Sorted array: " + string.Join(", ", arr));
 
-        //prb.RemoveZeros2(arr1);
-        //Console.WriteLine("romoved zeros: " + string.Join(", ", arr1));
+        //prb.ReverseanArray(arr);
+        //Console.WriteLine("reverse: " + string.Join(", ", arr));
 
         //Console.WriteLine($"Second largest element is : {prb.SecondLargest(arr)}");
         //int[] result = prb.RemoveDuplicate2(arr);
@@ -149,8 +150,8 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //}
 
-        int result1=prb.MissingNumber(arr2);
-        Console.WriteLine("missing number is : "+result1);
+        int result1 = prb.NumAppOnce(arr3);
+        Console.WriteLine("The number which is appearing once is  : " + result1);
 
 
         //Console.WriteLine(prb.EuclideanMeth(12,15));
@@ -1122,12 +1123,88 @@ public class Problems
     public int MissingNumber(int[] a) 
     {
         int n = a.Length;
+        int sum1 = n * (n + 1) / 2;
         int sum2 = 0;
         for (int i = 0; i < n - 1; i++) 
         {
             sum2 += a[i];
         }
         return sum1 - sum2;
+    } //TC =O(n) 
+
+    public int MissingNumber1(int[] a) 
+    {
+        int N = a.Length;
+        int n = N - 1;
+        int xor1 = 0, xor2 = 0;
+        for (int i = 0; i < n; i++)
+        {
+            xor2 = xor2 ^ a[i];
+            xor1 = xor1 ^ (i + 1);
+        }
+        xor1=xor1 ^ n+1;
+        return xor1 ^ xor2;
     }
+
+    public int FindMaxConsecutiveOnes(int[] nums)//TC =O(N) SC=(1)
+    {
+        int n = nums.Length;
+        int max = 0, count = 0;
+        for (int i = 0; i < n - 1; i++)
+        {
+            if (nums[i] == 1)
+            {
+                count++;
+                max =Math.Max(max, count);
+            }
+            else { count = 0; }
+
+        }
+      return max;
+
+    }
+    public void ReverseanArray(int[] arr) 
+    {
+        int n= arr.Length;
+        int i = 0;
+        int j = n-1;
+        while (i < n/2) 
+        {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+    }
+
+    public int NumAppOnce(int[] arr) 
+    {
+        int n = arr.Length;
+        int maxVal = arr.Max();
+        int[] hash = new int[maxVal + 1];
+        for (int i = 0;i < n; i++) 
+        {
+            hash[arr[i]]++;
+        }
+        for (int i = 0;i < n; i++) 
+        {
+            if (hash[arr[i]]==1) return arr[i];
+        }
+        return -1;
+    }
+
+    public int NumAppOnce1(int[] arr) 
+    {
+        int n = arr.Length;
+        int XOR = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            XOR=XOR^arr[i];
+        }
+        return XOR;
+    }
+
+    
 
 }
