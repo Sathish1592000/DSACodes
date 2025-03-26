@@ -150,8 +150,8 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //}
 
-        int result1 = prb.NumAppOnce(arr3);
-        Console.WriteLine("The number which is appearing once is  : " + result1);
+        int result1 = prb.LongSubarrayO(arr3,3);
+        Console.WriteLine("The longest sub array is : " + result1);
 
 
         //Console.WriteLine(prb.EuclideanMeth(12,15));
@@ -1205,6 +1205,79 @@ public class Problems
         return XOR;
     }
 
-    
+    public int LongSubarray(int[] arr,int sa) 
+    {
+        int n= arr.Length;
+        int Longsub = 0, sum=0;
+        for(int i = 0; i < n; i++) 
+        {
+            for (int j = i; j < n; j++) 
+            {
+                for(int k  = i; k < j; k++) 
+                {
+                    sum += arr[k];
+                    if (sum == sa)
+                    {
+                        Longsub = Math.Max(Longsub, sum);
+                    }
+                }
+            }
+        }
+        return Longsub;
+        
+    }
+
+    //longest sub array only for positive number and non -zeros
+    public int LongSubarrayO(int[] arr,int k) 
+    {
+        long sum = arr[0];
+        int max = 0;
+        int left = 0, right = 0;
+        int n =arr.Length;
+        while (right < n) 
+        {
+            while (left <= right && sum > k) 
+            {
+                sum -= arr[left];//subtract the element from the left and move the pointer to right 
+                left++;
+            }
+            if (sum == k) 
+            {
+                max = Math.Max(max, right - left); 
+            }
+            right++;
+            if (right < n) { sum += arr[right]; } // move forward to find the longest sum 
+            
+        }
+        return max;
+    }
+
+    public int LongSubHash(int[] arr, int k) 
+    {
+        Dictionary<long, int> map = new Dictionary<long, int>();
+        long prefixSum = 0;
+        int n = arr.Length,maxLen = 0;
+        for (int i = 0; i < n; i++)
+        {
+            prefixSum += arr[i];
+            if (prefixSum == k)
+            {
+                maxLen = Math.Max(maxLen, i + 1);
+            }
+            
+            if (map.ContainsKey(prefixSum-k))
+            {
+                int rem = map[prefixSum - k];
+                maxLen = Math.Max(maxLen,i-rem );
+            }
+            if (!map.ContainsKey(prefixSum))
+            {
+                map[prefixSum] = i;
+            }
+        }
+        return maxLen;
+    }
+
+}
 
 }
