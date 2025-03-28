@@ -47,6 +47,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Security.Cryptography.X509Certificates;
+using System.Collections.Immutable;
 
 public class Problems
 {
@@ -119,7 +120,7 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 1, 2, 3, 4,5};
+        int[] arr = new int[] { 2, 7, 11, 15 };
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5};
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
@@ -150,11 +151,12 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //}
 
-        int result1 = prb.LongSubarrayO(arr3,3);
-        Console.WriteLine("The longest sub array is : " + result1);
+        //int result1 = prb.LongSubarrayO(arr3,3);
+        //Console.WriteLine("The longest sub array is : " + result1);
+        bool result = prb.TwoSum1(arr, 9);
+        Console.WriteLine(result);
 
-
-        //Console.WriteLine(prb.EuclideanMeth(12,15));
+        /*Console.WriteLine(prb.EuclideanMeth(12,15));*/
         //Console.Read();
 
         #endregion
@@ -1228,7 +1230,7 @@ public class Problems
     }
 
     //longest sub array only for positive number and non -zeros
-    public int LongSubarrayO(int[] arr,int k) 
+    public int LongSubarrayO(int[] arr,int k) //TC=(2N)
     {
         long sum = arr[0];
         int max = 0;
@@ -1243,7 +1245,7 @@ public class Problems
             }
             if (sum == k) 
             {
-                max = Math.Max(max, right - left); 
+                max = Math.Max(max, (right - left)+1); 
             }
             right++;
             if (right < n) { sum += arr[right]; } // move forward to find the longest sum 
@@ -1252,6 +1254,7 @@ public class Problems
         return max;
     }
 
+    //optimal solution for longest subarray with sum k with positives ,negativesa and zeros 
     public int LongSubHash(int[] arr, int k) 
     {
         Dictionary<long, int> map = new Dictionary<long, int>();
@@ -1278,6 +1281,47 @@ public class Problems
         return maxLen;
     }
 
-}
+    //2Sum problem
+    public int[]  TwoSum(int[] arr, int T) //Better Soln using Hashing
+    {
+        Dictionary<int,int> map= new Dictionary<int,int>();
+        int n= arr.Length;
+        int total=0;
+        int sum = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            int req = T-arr[i];
+            if (map.ContainsKey(req))
+            {
+                //return true;
+                return new int[] { map[req], i };
+            }
+            map[arr[i]] = i;
+        }
+        //return false;
+        return new int[] { -1, -1 } ;
+
+    } //TC = O(nlogn) //SC=O(N)
+
+    public bool TwoSum1(int[] arr,int T) //O(n)+O(nlogn)
+    {
+        Array.Sort(arr);
+        int n= arr.Length;
+        int left = 0,right=n-1;
+        
+        
+        while (left < right) 
+        {
+            int sum = arr[left] + arr[right];
+            if (sum == T)
+            {
+                return true;
+            }
+            else if (sum < T) { left++; }
+            else { right--; }     
+        }
+        return false;
+    }
 
 }
+
