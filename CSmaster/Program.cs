@@ -124,14 +124,16 @@ public class Problems
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5};
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+        int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
+        int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        //prb.RecursiveInsertion(arr, i, n);
-        //Console.WriteLine("Sorted array: " + string.Join(", ", arr));
+        prb.ZerosOnesTwos2(arr5);
+        Console.WriteLine(" array: " + string.Join(", ", arr5));
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -143,18 +145,18 @@ public class Problems
 
 
         //List<int> arr = new List<int> {0,5,6,7,8,9,12,45};
-        //int[] result = prb.Intersection(arr, arr1);
-        ////Console.WriteLine(result);
+        //int[] result = prb.ZerosOnesTwos(arr4);
+        //Console.WriteLine(result);
 
         //foreach (int i in result)
         //{
         //    Console.WriteLine(" " + i);
-        //}
+        //    }
 
         //int result1 = prb.LongSubarrayO(arr3,3);
         //Console.WriteLine("The longest sub array is : " + result1);
-        bool result = prb.TwoSum1(arr, 9);
-        Console.WriteLine(result);
+        //bool result = prb.TwoSum1(arr, 9);
+        //Console.WriteLine(result);
 
         /*Console.WriteLine(prb.EuclideanMeth(12,15));*/
         //Console.Read();
@@ -1248,7 +1250,7 @@ public class Problems
                 max = Math.Max(max, (right - left)+1); 
             }
             right++;
-            if (right < n) { sum += arr[right]; } // move forward to find the longest sum 
+            if (right < n) { sum += arr[right]; } // move forward to find the longest sum
             
         }
         return max;
@@ -1321,6 +1323,50 @@ public class Problems
             else { right--; }     
         }
         return false;
+    }
+
+    //Better solution 
+    public  int[] ZerosOnesTwos(int[] arr)
+    {
+        int n= arr.Length;
+        int count0=0, count1 = 0, count2=0;
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] == 0) { count0++;}
+            if(arr[i] == 1) { count1++;}
+            if(arr[i] == 2) { count2++;}
+        }
+        for (int i = 0; i < count0; i++) { arr[i] = 0; }
+        for (int i = count0; i< count0+count1; i++) { arr[i]=1; }
+        for (int i = count0 + count1; i <n; i++) { arr[i] = 2; }
+        return arr;
+    }
+
+    //Optimal solution using Dutch National Flag Algorithm 
+    public int[] ZerosOnesTwos2(int[] arr) //TC=O(n);SC=O(1)
+    {
+        int n= arr.Length;
+        int low = 0, mid = 0,high=n-1;
+        while (mid<=high) 
+        {
+            if (arr[mid] == 0)
+            {
+                int temp = arr[low];
+                arr[low] = arr[mid];
+                arr[mid] = temp;
+                low++;
+                mid++;
+            }
+            else if (arr[mid] == 1) { mid++; }
+            else
+            {
+                int temp = arr[mid];
+                arr[mid] = arr[high];
+                arr[high] = temp;
+                high--;
+            }
+        }
+        return arr;
     }
 
 }
