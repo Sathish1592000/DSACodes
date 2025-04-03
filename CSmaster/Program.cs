@@ -1325,6 +1325,7 @@ public class Problems
         return false;
     }
 
+    //ZerosOnesTwos Sort problem
     //Better solution 
     public  int[] ZerosOnesTwos(int[] arr)
     {
@@ -1367,6 +1368,58 @@ public class Problems
             }
         }
         return arr;
+    }
+
+    //Majority element occurs >n/2 
+    //Better Soln
+    public int Majelements(int[] arr) 
+    {
+        Dictionary<int,int> map = new Dictionary<int,int>();
+        int n=arr.Length;
+        for (int i = 0; i < n; i++) 
+        {
+            if (map.ContainsKey(arr[i]))
+            {
+                map[arr[i]]++;
+            }
+            else map[arr[i]] = 1;
+            
+        }
+        foreach (var val in map)
+        {
+            if (val.Value > n / 2)
+                return val.Key;
+        }
+        return -1;
+
+    }
+
+    //Moores's Voting Algorithm
+    public int MooresAlgMajele(int[] arr)//TC=O(n)+O(n) SC=O(n)
+    {
+        int n = arr.Length;
+        int ele = 0, count = 0;
+        
+        for (int i = 0; i < n; i++)
+        {
+            if (count == 0)
+            {
+                count = 1;
+                ele = arr[i];
+            }
+            if (ele == arr[i]) { count++; }
+            else count--;
+        }
+        int count1 = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] == ele) { count1++; }
+            if (count1 > n / 2) 
+            {
+                return ele;
+            }
+        }
+        return -1; 
     }
 
 }
