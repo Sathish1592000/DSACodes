@@ -122,7 +122,7 @@ public class Problems
         //}
         int[] arr = new int[] { 2, 7, 11, 15 };
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
-        int[] arr2 = new int[] { 1, 3, 4, 5};
+        int[] arr2 = new int[] { 1, 3, 4, 5 };
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
         int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
         int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
@@ -132,8 +132,8 @@ public class Problems
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        prb.ZerosOnesTwos2(arr5);
-        Console.WriteLine(" array: " + string.Join(", ", arr5));
+        //prb.ZerosOnesTwos2(arr5);
+        //Console.WriteLine(" array: " + string.Join(", ", arr5));
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -153,8 +153,10 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //    }
 
-        //int result1 = prb.LongSubarrayO(arr3,3);
+        //int result1 = prb.LongSubarrayO(arr3, 3);
         //Console.WriteLine("The longest sub array is : " + result1);
+        int result1 = prb.MaxSubArray(arr3);
+        Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
         //Console.WriteLine(result);
 
@@ -1106,37 +1108,38 @@ public class Problems
         int i = 0;
         int j = 0;
         List<int> intersect = new List<int>();
-        while(n1>i && n2 > j) 
+        while (n1 > i && n2 > j)
         {
-            if (a[i] < b[j]) 
+            if (a[i] < b[j])
             {
                 i++;
             }
-            else if (b[j] < a[i]) 
+            else if (b[j] < a[i])
             {
                 j++;
             }
-            else {
+            else
+            {
                 intersect.Add(a[i]);
-                i++;j++;
+                i++; j++;
             }
         }
         return intersect.ToArray();
     }
 
-    public int MissingNumber(int[] a) 
+    public int MissingNumber(int[] a)
     {
         int n = a.Length;
         int sum1 = n * (n + 1) / 2;
         int sum2 = 0;
-        for (int i = 0; i < n - 1; i++) 
+        for (int i = 0; i < n - 1; i++)
         {
             sum2 += a[i];
         }
         return sum1 - sum2;
     } //TC =O(n) 
 
-    public int MissingNumber1(int[] a) 
+    public int MissingNumber1(int[] a)
     {
         int N = a.Length;
         int n = N - 1;
@@ -1146,7 +1149,7 @@ public class Problems
             xor2 = xor2 ^ a[i];
             xor1 = xor1 ^ (i + 1);
         }
-        xor1=xor1 ^ n+1;
+        xor1 = xor1 ^ n + 1;
         return xor1 ^ xor2;
     }
 
@@ -1159,20 +1162,20 @@ public class Problems
             if (nums[i] == 1)
             {
                 count++;
-                max =Math.Max(max, count);
+                max = Math.Max(max, count);
             }
             else { count = 0; }
 
         }
-      return max;
+        return max;
 
     }
-    public void ReverseanArray(int[] arr) 
+    public void ReverseanArray(int[] arr)
     {
-        int n= arr.Length;
+        int n = arr.Length;
         int i = 0;
-        int j = n-1;
-        while (i < n/2) 
+        int j = n - 1;
+        while (i < n / 2)
         {
             int temp = arr[i];
             arr[i] = arr[j];
@@ -1182,42 +1185,42 @@ public class Problems
         }
     }
 
-    public int NumAppOnce(int[] arr) 
+    public int NumAppOnce(int[] arr)
     {
         int n = arr.Length;
         int maxVal = arr.Max();
         int[] hash = new int[maxVal + 1];
-        for (int i = 0;i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             hash[arr[i]]++;
         }
-        for (int i = 0;i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            if (hash[arr[i]]==1) return arr[i];
+            if (hash[arr[i]] == 1) return arr[i];
         }
         return -1;
     }
 
-    public int NumAppOnce1(int[] arr) 
+    public int NumAppOnce1(int[] arr)
     {
         int n = arr.Length;
         int XOR = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            XOR=XOR^arr[i];
+            XOR = XOR ^ arr[i];
         }
         return XOR;
     }
 
-    public int LongSubarray(int[] arr,int sa) 
+    public int LongSubarray(int[] arr, int sa)
     {
-        int n= arr.Length;
-        int Longsub = 0, sum=0;
-        for(int i = 0; i < n; i++) 
+        int n = arr.Length;
+        int Longsub = 0, sum = 0;
+        for (int i = 0; i < n; i++)
         {
-            for (int j = i; j < n; j++) 
+            for (int j = i; j < n; j++)
             {
-                for(int k  = i; k < j; k++) 
+                for (int k = i; k < j; k++)
                 {
                     sum += arr[k];
                     if (sum == sa)
@@ -1228,40 +1231,40 @@ public class Problems
             }
         }
         return Longsub;
-        
+
     }
 
     //longest sub array only for positive number and non -zeros
-    public int LongSubarrayO(int[] arr,int k) //TC=(2N)
+    public int LongSubarrayO(int[] arr, int k) //TC=(2N)
     {
         long sum = arr[0];
         int max = 0;
         int left = 0, right = 0;
-        int n =arr.Length;
-        while (right < n) 
+        int n = arr.Length;
+        while (right < n)
         {
-            while (left <= right && sum > k) 
+            while (left <= right && sum > k)
             {
                 sum -= arr[left];//subtract the element from the left and move the pointer to right 
                 left++;
             }
-            if (sum == k) 
+            if (sum == k)
             {
-                max = Math.Max(max, (right - left)+1); 
+                max = Math.Max(max, (right - left) + 1);
             }
             right++;
             if (right < n) { sum += arr[right]; } // move forward to find the longest sum
-            
+
         }
         return max;
     }
 
     //optimal solution for longest subarray with sum k with positives ,negativesa and zeros 
-    public int LongSubHash(int[] arr, int k) 
+    public int LongSubHash(int[] arr, int k)
     {
         Dictionary<long, int> map = new Dictionary<long, int>();
         long prefixSum = 0;
-        int n = arr.Length,maxLen = 0;
+        int n = arr.Length, maxLen = 0;
         for (int i = 0; i < n; i++)
         {
             prefixSum += arr[i];
@@ -1269,11 +1272,11 @@ public class Problems
             {
                 maxLen = Math.Max(maxLen, i + 1);
             }
-            
-            if (map.ContainsKey(prefixSum-k))
+
+            if (map.ContainsKey(prefixSum - k))
             {
                 int rem = map[prefixSum - k];
-                maxLen = Math.Max(maxLen,i-rem );
+                maxLen = Math.Max(maxLen, i - rem);
             }
             if (!map.ContainsKey(prefixSum))
             {
@@ -1284,15 +1287,15 @@ public class Problems
     }
 
     //2Sum problem
-    public int[]  TwoSum(int[] arr, int T) //Better Soln using Hashing
+    public int[] TwoSum(int[] arr, int T) //Better Soln using Hashing
     {
-        Dictionary<int,int> map= new Dictionary<int,int>();
-        int n= arr.Length;
-        int total=0;
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        int n = arr.Length;
+        int total = 0;
         int sum = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            int req = T-arr[i];
+            int req = T - arr[i];
             if (map.ContainsKey(req))
             {
                 //return true;
@@ -1301,18 +1304,18 @@ public class Problems
             map[arr[i]] = i;
         }
         //return false;
-        return new int[] { -1, -1 } ;
+        return new int[] { -1, -1 };
 
     } //TC = O(nlogn) //SC=O(N)
 
-    public bool TwoSum1(int[] arr,int T) //O(n)+O(nlogn)
+    public bool TwoSum1(int[] arr, int T) //O(n)+O(nlogn)
     {
         Array.Sort(arr);
-        int n= arr.Length;
-        int left = 0,right=n-1;
-        
-        
-        while (left < right) 
+        int n = arr.Length;
+        int left = 0, right = n - 1;
+
+
+        while (left < right)
         {
             int sum = arr[left] + arr[right];
             if (sum == T)
@@ -1320,35 +1323,35 @@ public class Problems
                 return true;
             }
             else if (sum < T) { left++; }
-            else { right--; }     
+            else { right--; }
         }
         return false;
     }
 
     //ZerosOnesTwos Sort problem
     //Better solution 
-    public  int[] ZerosOnesTwos(int[] arr)
+    public int[] ZerosOnesTwos(int[] arr)
     {
-        int n= arr.Length;
-        int count0=0, count1 = 0, count2=0;
-        for (int i = 0; i < n; i++) 
+        int n = arr.Length;
+        int count0 = 0, count1 = 0, count2 = 0;
+        for (int i = 0; i < n; i++)
         {
-            if (arr[i] == 0) { count0++;}
-            if(arr[i] == 1) { count1++;}
-            if(arr[i] == 2) { count2++;}
+            if (arr[i] == 0) { count0++; }
+            if (arr[i] == 1) { count1++; }
+            if (arr[i] == 2) { count2++; }
         }
         for (int i = 0; i < count0; i++) { arr[i] = 0; }
-        for (int i = count0; i< count0+count1; i++) { arr[i]=1; }
-        for (int i = count0 + count1; i <n; i++) { arr[i] = 2; }
+        for (int i = count0; i < count0 + count1; i++) { arr[i] = 1; }
+        for (int i = count0 + count1; i < n; i++) { arr[i] = 2; }
         return arr;
     }
 
     //Optimal solution using Dutch National Flag Algorithm 
     public int[] ZerosOnesTwos2(int[] arr) //TC=O(n);SC=O(1)
     {
-        int n= arr.Length;
-        int low = 0, mid = 0,high=n-1;
-        while (mid<=high) 
+        int n = arr.Length;
+        int low = 0, mid = 0, high = n - 1;
+        while (mid <= high)
         {
             if (arr[mid] == 0)
             {
@@ -1372,18 +1375,18 @@ public class Problems
 
     //Majority element occurs >n/2 
     //Better Soln
-    public int Majelements(int[] arr) 
+    public int Majelements(int[] arr)
     {
-        Dictionary<int,int> map = new Dictionary<int,int>();
-        int n=arr.Length;
-        for (int i = 0; i < n; i++) 
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        int n = arr.Length;
+        for (int i = 0; i < n; i++)
         {
             if (map.ContainsKey(arr[i]))
             {
                 map[arr[i]]++;
             }
             else map[arr[i]] = 1;
-            
+
         }
         foreach (var val in map)
         {
@@ -1399,7 +1402,7 @@ public class Problems
     {
         int n = arr.Length;
         int ele = 0, count = 0;
-        
+
         for (int i = 0; i < n; i++)
         {
             if (count == 0)
@@ -1414,13 +1417,73 @@ public class Problems
         for (int i = 0; i < n; i++)
         {
             if (arr[i] == ele) { count1++; }
-            if (count1 > n / 2) 
+            if (count1 > n / 2)
             {
                 return ele;
             }
         }
-        return -1; 
+        return -1;
     }
+
+    //Maximum subarray Sum 
+    //Brute force approach //TC=n(n^3) ,SC=O(1)
+    public int MaxSubArray(int[] arr)
+    {
+        int n = arr.Length;
+
+        int maxi = Int32.MinValue;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                int sum = 0;
+                for (int k = i; k <= j; k++)
+                {
+                    sum += arr[k];
+
+                }
+                maxi = Math.Max(sum, maxi);
+            }
+        }
+        return maxi;
+    }
+
+    //Better approach -- Here we need to remove only the k loop and sum it with j loop //TC=n(n^2) ,SC=O(1)
+    public int MaxSubArray1(int[] arr)
+    {
+        int n = arr.Length;
+
+        int maxi = Int32.MinValue;
+        for (int i = 0; i < n; i++)
+        {
+            int sum = 0;
+            for (int j = i; j < n; j++)
+            {
+                sum += arr[j];
+                maxi = Math.Max(sum, maxi);
+            }
+        }
+        return maxi;
+    }
+
+    //Optimal approach - using kadane's algorithm
+    //TC=O(n) SC=O(1)
+    public int MaxSubArray2(int[] nums) 
+    {
+        int n = nums.Length, max = nums[0], sum = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            sum+= nums[i];
+            max= Math.Max(sum, max);
+            if (sum < max) 
+            {
+                sum = 0;
+            }
+        }
+        return max;
+    }
+
+
 
 }
 
