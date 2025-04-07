@@ -155,7 +155,7 @@ public class Problems
 
         //int result1 = prb.LongSubarrayO(arr3, 3);
         //Console.WriteLine("The longest sub array is : " + result1);
-        int result1 = prb.MaxSubArray(arr3);
+        int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
         Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
         //Console.WriteLine(result);
@@ -1483,7 +1483,67 @@ public class Problems
         return max;
     }
 
+    //these are stacks kepp for later 
+    public int MaxSubarraysmallandsecondsmall(int[] arr) 
+    {
+        int n = arr.Length;
+        int sum = 0;
+        int max = int.MinValue;
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = i+1;j < n; j++) 
+            {
+                int min1=int.MaxValue, min2=int.MaxValue;
+                for (int k = i; k <= j; k++) 
+                {
+                    if (arr[k] < min1)
+                    {
+                        min2 = min1;
+                        min1 = arr[k];
+                    }
+                    else if (arr[k] < min2) 
+                    {
+                        min2 = arr[k];
+                    }
+                    sum = min1 + min2;
+                }
+                max = Math.Max(sum, max);
+            }    
+        }
+        return max;
+    }
 
+    //Buy and sell stocks 
+    //My soln
+    public int buySellStocks(int[] arr) 
+    {
+        int n=arr.Length;
+        int profit = 0, min = arr[0],maxProfit=0;
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] < min) 
+            {
+                min = arr[i];       
+            }
+            maxProfit=Math.Max(profit,maxProfit);
+        }
+        return profit;
+    }
+
+    //Striver Soln
+
+    public int buySellStocks1(int[] prices) 
+    {
+        int n=prices.Length;
+        int profit = 0, min = prices[0];
+        for (int i = 1; i < n; i++) 
+        {
+            int cost=prices[i]-min;
+            profit=Math.Max(profit,cost);
+            min = Math.Min(prices[i], min);
+        }
+        return profit;
+    }
 
 }
 
