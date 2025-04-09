@@ -126,14 +126,15 @@ public class Problems
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
         int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
         int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
+        int[] arr6 = new int[] {3,1,-2,-5,2,-4};
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        //prb.ZerosOnesTwos2(arr5);
-        //Console.WriteLine(" array: " + string.Join(", ", arr5));
+        prb.RearrangeArray(arr6);
+        Console.WriteLine(" array: " + string.Join(", ", arr6));
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -155,8 +156,8 @@ public class Problems
 
         //int result1 = prb.LongSubarrayO(arr3, 3);
         //Console.WriteLine("The longest sub array is : " + result1);
-        int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
-        Console.WriteLine("The Maximum sub array is : " + result1);
+        //int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
+        //Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
         //Console.WriteLine(result);
 
@@ -1531,7 +1532,6 @@ public class Problems
     }
 
     //Striver Soln
-
     public int buySellStocks1(int[] prices) 
     {
         int n=prices.Length;
@@ -1543,6 +1543,98 @@ public class Problems
             min = Math.Min(prices[i], min);
         }
         return profit;
+    }
+
+    //Rearrage positive and negative
+    //Brute solution -> TC=O(2n) ,SC=O(n)
+    public int[] rearrange1(int[] arr) 
+    {
+        int n = arr.Length;
+        List<int> positive = new List<int>();
+        List<int> negative = new List<int>();
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] > 0) 
+            {
+                positive.Add(arr[i]);
+            }
+            else 
+                negative.Add(arr[i]);
+        }
+        for (int i = 0; i < n/2; i++) 
+        {
+            arr[2*i]= positive[i];
+            arr[(2*i)+1]= negative[i];
+        }
+        return arr;
+    }
+
+    //Optimal Soln
+    public int[] RearrangeArray(int[] nums)
+    {
+        int n = nums.Length;
+        int[] ans = new int[n];
+        int posIndex = 0, negIndex = 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] < 0)
+            {
+                ans[negIndex] = nums[i];
+                negIndex += 2;
+            }
+            else
+            {
+                ans[posIndex] = nums[i];
+                posIndex += 2;
+            }
+        }
+        return ans;
+    }
+
+    public int[] RearrangeArrayVar2(int[] arr) 
+    {
+        int n = arr.Length;
+        List<int> positive = new List<int>();
+        List<int> negative = new List<int>();
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] > 0)
+            {
+                positive.Add(arr[i]);
+            }
+            else
+                negative.Add(arr[i]);
+        }
+        if (positive.Count > negative.Count)
+        {
+            for (int i = 0; i < negative.Count; i++)
+            {
+                arr[2 * i] = positive[i];
+                arr[(2 * i) + 1] = negative[i];
+            }
+            int index=negative.Count*2;
+            for (int i = negative.Count; i < positive.Count; i++) 
+            {
+                arr[index] = positive[i];
+                index++;
+            }
+
+        }
+        else 
+        {
+            for (int i = 0; i < positive.Count; i++)
+            {
+                arr[2 * i] = positive[i];
+                arr[(2 * i) + 1] = negative[i];
+            }
+            int index = negative.Count * 2;
+            for (int i = positive.Count; i < negative.Count; i++)
+            {
+                arr[index] = negative[i];
+                index++;
+            }
+        }
+        return arr;
     }
 
 }
