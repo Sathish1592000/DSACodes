@@ -127,14 +127,15 @@ public class Problems
         int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
         int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
         int[] arr6 = new int[] {3,1,-2,-5,2,-4};
+        int[] arr7 = new int[] { 1, 3, 2 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        prb.RearrangeArray(arr6);
-        Console.WriteLine(" array: " + string.Join(", ", arr6));
+        prb.NextPermutation(arr7);
+        Console.WriteLine(" array: " + string.Join(", ", arr7));
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -1637,5 +1638,41 @@ public class Problems
         return arr;
     }
 
-}
+    //Next Permutation
+    //Optimized
+    //TC=(3N) SC=(1)
+    public void NextPermutation(int[] nums)
+    {
+        int n = nums.Length;
+        int ind = -1;
+        //Find the dipping point
+        for (int i = n - 2; i >= 0; i--)
+        {
+            if (nums[i] < nums[i + 1])
+            {
+                ind = i;
+                break;
+            }
+        }
+        if (ind == -1)
+        {
+            Array.Reverse(nums);
+            return;
+        }
+        //find the next smallest 
+        for (int i = n - 1; i > ind; i--)
+        {
+            //swap
+            if (nums[i] > nums[ind])
+            {
+                int temp = nums[i];
+                nums[i] = nums[ind];
+                nums[ind] = temp;
+                break;
+            }
+        }
+        // array reverse or sort 
+        Array.Reverse(nums, ind + 1, n - ind - 1);
+    }
 
+}
