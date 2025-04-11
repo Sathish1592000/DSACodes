@@ -120,7 +120,7 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 2, 7, 11, 15 };
+        int[] arr = new int[] { 16,17,4,3,5,2 };
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5 };
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
@@ -134,8 +134,14 @@ public class Problems
         ////Console.WriteLine("Sorted array: " + string.Join(", ", arr));
         //int n=arr.Length;
         //int i = 0;
-        prb.NextPermutation(arr7);
-        Console.WriteLine(" array: " + string.Join(", ", arr7));
+        //prb.LeaderInanArray(arr);
+        //Console.WriteLine(" array: " + string.Join(", ", arr));
+        List<int> result = prb.Leader2(arr);
+        
+        foreach (int res in result) 
+        {
+            Console.Write(" "+res);
+        }
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -1673,6 +1679,46 @@ public class Problems
         }
         // array reverse or sort 
         Array.Reverse(nums, ind + 1, n - ind - 1);
+    }
+
+    //brute for Leader in an array problem
+    public List<int> LeaderInanArray(int[] arr) 
+    {
+        List<int> Leaderlist = new List<int>();
+        int n = arr.Length;
+       
+        for (int i = 0; i < n; i++) 
+        {
+            bool IsLeader = true;
+            for (int j = i+1; j < n; j++) 
+            {
+                if (arr[j] > arr[i]) {
+                    IsLeader = false;
+                    break; 
+                } 
+            } 
+            if (IsLeader)
+                Leaderlist.Add(arr[i]);
+        }
+        return Leaderlist;
+    }
+
+    //Optimal Solution for Leaders in an array
+    public List<int> Leader2(int[] arr) 
+    {
+        int n=arr.Length;
+        int max = int.MinValue;
+        List<int> leader=new List<int>();
+        for (int i = n - 1; i >= 0; i--) 
+        {
+            if (arr[i] > max) 
+            {
+                leader.Add(arr[i]);
+            }
+            max=Math.Max(max, arr[i]);
+        }
+        leader.Sort();//or leader.Reverse();
+        return leader;
     }
 
 }
