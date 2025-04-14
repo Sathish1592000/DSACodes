@@ -120,7 +120,7 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 16,17,4,3,5,2 };
+        int[] arr = new int[] { 102,103,104,1,2,3,4,5,6,10 };
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5 };
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
@@ -136,12 +136,12 @@ public class Problems
         //int i = 0;
         //prb.LeaderInanArray(arr);
         //Console.WriteLine(" array: " + string.Join(", ", arr));
-        List<int> result = prb.Leader2(arr);
-        
-        foreach (int res in result) 
-        {
-            Console.Write(" "+res);
-        }
+        //List<int> result = prb.Leader2(arr);
+
+        //foreach (int res in result) 
+        //{
+        //    Console.Write(" "+res);
+        //}
 
         //prb.ReverseanArray(arr);
         //Console.WriteLine("reverse: " + string.Join(", ", arr));
@@ -161,8 +161,8 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //    }
 
-        //int result1 = prb.LongSubarrayO(arr3, 3);
-        //Console.WriteLine("The longest sub array is : " + result1);
+        int result1 = prb.longestsubsequence1(arr);
+        Console.WriteLine("The longest sub array is : " + result1);
         //int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
         //Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
@@ -1721,4 +1721,95 @@ public class Problems
         return leader;
     }
 
+    //Longest subsequence in an array 
+    //Brute solution
+    //TC=O(n^2) SC=O(1)
+    public static int longestSubsequence(int[] arr) 
+    {
+        int n=arr.Length;
+        int longest = 1;
+        for (int i = 0; i < n; i++) 
+        {
+            int x= arr[i];
+            int count = 1;
+            while (ls(arr, x + 1)) //using ls
+            {
+                x = x + 1;
+                count += 1;
+            }
+            //while (Array.Exists(arr,val=>val==x+1))//using predicates
+            //{
+            //    x = x + 1;
+            //    count += 1;
+            //}
+            longest = Math.Max(longest, count);  
+        }
+
+        return longest;
+    }
+    public static bool ls(int[] arr, int num) 
+    {
+        for (int i = 0; i < arr.Length; i++) 
+        {
+            if (arr[i] == num) 
+            {
+                return true;
+            }    
+        }
+        return false;
+    }
+
+    //Better Soln
+    public int longestsubsequence1(int[] arr) 
+    {
+        //first sort 
+        Array.Sort(arr);
+        int n=arr.Length;
+        int longest = 1,count=0;
+        int lastsmallest = int.MinValue;
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] - 1 == lastsmallest)
+            {
+                count += 1;
+                lastsmallest = arr[i];
+            }
+            else if(lastsmallest != arr[i])
+            {
+                count = 1;
+                lastsmallest = arr[i];      
+            }
+            longest=Math.Max(longest, count);
+        }
+        return longest;
+
+    }
+
+    //Optimal solution
+    public int longestsubsequence(int[] arr) 
+    {
+        int n=arr.Length;
+        int longest = 1;
+        if (n == 0) return n;
+        List<int> value = new List<int>();
+        for (int i = 0; i < n; i++) //Push it to the List 
+        {
+            value.Add(arr[i]);
+        }
+        foreach (int val in value) 
+        {
+            if (!value.Contains(val - 1)) //if value less than the current value is not available then only proceed else dont proceed 
+            {
+                int cnt = 1;
+                int x = val;
+                while (value.Contains(x + 1))//Checks the count 
+                {
+                    x = x + 1;
+                    cnt += 1;
+                }
+                longest =Math.Max(longest, cnt);             
+            }
+        }
+        return longest;
+    }
 }
