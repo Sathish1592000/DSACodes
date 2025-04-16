@@ -120,13 +120,13 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 102,103,104,1,2,3,4,5,6,10 };
+        int[] arr = new int[] { 102, 103, 104, 1, 2, 3, 4, 5, 6, 10 };
         int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
         int[] arr2 = new int[] { 1, 3, 4, 5 };
         int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
         int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
         int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
-        int[] arr6 = new int[] {3,1,-2,-5,2,-4};
+        int[] arr6 = new int[] { 3, 1, -2, -5, 2, -4 };
         int[] arr7 = new int[] { 1, 3, 2 };
         //int low = 0;
         //int high = arr.Length - 1;
@@ -1476,14 +1476,14 @@ public class Problems
 
     //Optimal approach - using kadane's algorithm
     //TC=O(n) SC=O(1)
-    public int MaxSubArray2(int[] nums) 
+    public int MaxSubArray2(int[] nums)
     {
         int n = nums.Length, max = nums[0], sum = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            sum+= nums[i];
-            max= Math.Max(sum, max);
-            if (sum < max) 
+            sum += nums[i];
+            max = Math.Max(sum, max);
+            if (sum < max)
             {
                 sum = 0;
             }
@@ -1492,61 +1492,61 @@ public class Problems
     }
 
     //these are stacks kepp for later 
-    public int MaxSubarraysmallandsecondsmall(int[] arr) 
+    public int MaxSubarraysmallandsecondsmall(int[] arr)
     {
         int n = arr.Length;
         int sum = 0;
         int max = int.MinValue;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            for (int j = i+1;j < n; j++) 
+            for (int j = i + 1; j < n; j++)
             {
-                int min1=int.MaxValue, min2=int.MaxValue;
-                for (int k = i; k <= j; k++) 
+                int min1 = int.MaxValue, min2 = int.MaxValue;
+                for (int k = i; k <= j; k++)
                 {
                     if (arr[k] < min1)
                     {
                         min2 = min1;
                         min1 = arr[k];
                     }
-                    else if (arr[k] < min2) 
+                    else if (arr[k] < min2)
                     {
                         min2 = arr[k];
                     }
                     sum = min1 + min2;
                 }
                 max = Math.Max(sum, max);
-            }    
+            }
         }
         return max;
     }
 
     //Buy and sell stocks 
     //My soln
-    public int buySellStocks(int[] arr) 
+    public int buySellStocks(int[] arr)
     {
-        int n=arr.Length;
-        int profit = 0, min = arr[0],maxProfit=0;
-        for (int i = 0; i < n; i++) 
+        int n = arr.Length;
+        int profit = 0, min = arr[0], maxProfit = 0;
+        for (int i = 0; i < n; i++)
         {
-            if (arr[i] < min) 
+            if (arr[i] < min)
             {
-                min = arr[i];       
+                min = arr[i];
             }
-            maxProfit=Math.Max(profit,maxProfit);
+            maxProfit = Math.Max(profit, maxProfit);
         }
         return profit;
     }
 
     //Striver Soln
-    public int buySellStocks1(int[] prices) 
+    public int buySellStocks1(int[] prices)
     {
-        int n=prices.Length;
+        int n = prices.Length;
         int profit = 0, min = prices[0];
-        for (int i = 1; i < n; i++) 
+        for (int i = 1; i < n; i++)
         {
-            int cost=prices[i]-min;
-            profit=Math.Max(profit,cost);
+            int cost = prices[i] - min;
+            profit = Math.Max(profit, cost);
             min = Math.Min(prices[i], min);
         }
         return profit;
@@ -1554,24 +1554,24 @@ public class Problems
 
     //Rearrage positive and negative
     //Brute solution -> TC=O(2n) ,SC=O(n)
-    public int[] rearrange1(int[] arr) 
+    public int[] rearrange1(int[] arr)
     {
         int n = arr.Length;
         List<int> positive = new List<int>();
         List<int> negative = new List<int>();
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            if (arr[i] > 0) 
+            if (arr[i] > 0)
             {
                 positive.Add(arr[i]);
             }
-            else 
+            else
                 negative.Add(arr[i]);
         }
-        for (int i = 0; i < n/2; i++) 
+        for (int i = 0; i < n / 2; i++)
         {
-            arr[2*i]= positive[i];
-            arr[(2*i)+1]= negative[i];
+            arr[2 * i] = positive[i];
+            arr[(2 * i) + 1] = negative[i];
         }
         return arr;
     }
@@ -1598,7 +1598,7 @@ public class Problems
         return ans;
     }
 
-    public int[] RearrangeArrayVar2(int[] arr) 
+    public int[] RearrangeArrayVar2(int[] arr)
     {
         int n = arr.Length;
         List<int> positive = new List<int>();
@@ -1619,15 +1619,15 @@ public class Problems
                 arr[2 * i] = positive[i];
                 arr[(2 * i) + 1] = negative[i];
             }
-            int index=negative.Count*2;
-            for (int i = negative.Count; i < positive.Count; i++) 
+            int index = negative.Count * 2;
+            for (int i = negative.Count; i < positive.Count; i++)
             {
                 arr[index] = positive[i];
                 index++;
             }
 
         }
-        else 
+        else
         {
             for (int i = 0; i < positive.Count; i++)
             {
@@ -1682,21 +1682,21 @@ public class Problems
     }
 
     //brute for Leader in an array problem
-    public List<int> LeaderInanArray(int[] arr) 
+    public List<int> LeaderInanArray(int[] arr)
     {
         List<int> Leaderlist = new List<int>();
         int n = arr.Length;
-       
-        for (int i = 0; i < n; i++) 
+
+        for (int i = 0; i < n; i++)
         {
             bool IsLeader = true;
-            for (int j = i+1; j < n; j++) 
+            for (int j = i + 1; j < n; j++)
             {
                 if (arr[j] > arr[i]) {
                     IsLeader = false;
-                    break; 
-                } 
-            } 
+                    break;
+                }
+            }
             if (IsLeader)
                 Leaderlist.Add(arr[i]);
         }
@@ -1704,18 +1704,18 @@ public class Problems
     }
 
     //Optimal Solution for Leaders in an array
-    public List<int> Leader2(int[] arr) 
+    public List<int> Leader2(int[] arr)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int max = int.MinValue;
-        List<int> leader=new List<int>();
-        for (int i = n - 1; i >= 0; i--) 
+        List<int> leader = new List<int>();
+        for (int i = n - 1; i >= 0; i--)
         {
-            if (arr[i] > max) 
+            if (arr[i] > max)
             {
                 leader.Add(arr[i]);
             }
-            max=Math.Max(max, arr[i]);
+            max = Math.Max(max, arr[i]);
         }
         leader.Sort();//or leader.Reverse();
         return leader;
@@ -1724,13 +1724,13 @@ public class Problems
     //Longest subsequence in an array 
     //Brute solution
     //TC=O(n^2) SC=O(1)
-    public static int longestSubsequence(int[] arr) 
+    public static int longestSubsequence(int[] arr)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int longest = 1;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            int x= arr[i];
+            int x = arr[i];
             int count = 1;
             while (ls(arr, x + 1)) //using ls
             {
@@ -1742,61 +1742,62 @@ public class Problems
             //    x = x + 1;
             //    count += 1;
             //}
-            longest = Math.Max(longest, count);  
+            longest = Math.Max(longest, count);
         }
 
         return longest;
     }
-    public static bool ls(int[] arr, int num) 
+    public static bool ls(int[] arr, int num)
     {
-        for (int i = 0; i < arr.Length; i++) 
+        for (int i = 0; i < arr.Length; i++)
         {
-            if (arr[i] == num) 
+            if (arr[i] == num)
             {
                 return true;
-            }    
+            }
         }
         return false;
     }
 
     //Better Soln
-    public int longestsubsequence1(int[] arr) 
+    public int longestsubsequence1(int[] arr)
     {
         //first sort 
         Array.Sort(arr);
-        int n=arr.Length;
-        int longest = 1,count=0;
+        int n = arr.Length;
+        int longest = 1, count = 0;
         int lastsmallest = int.MinValue;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             if (arr[i] - 1 == lastsmallest)
             {
                 count += 1;
                 lastsmallest = arr[i];
             }
-            else if(lastsmallest != arr[i])
+            else if (lastsmallest != arr[i])
             {
                 count = 1;
-                lastsmallest = arr[i];      
+                lastsmallest = arr[i];
             }
-            longest=Math.Max(longest, count);
+            longest = Math.Max(longest, count);
         }
         return longest;
 
     }
 
     //Optimal solution
-    public int longestsubsequence(int[] arr) 
+    
+    public int longestsubsequence(int[] arr)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int longest = 1;
         if (n == 0) return n;
-        List<int> value = new List<int>();
+        HashSet<int> value = new HashSet<int>();
         for (int i = 0; i < n; i++) //Push it to the List 
         {
             value.Add(arr[i]);
         }
-        foreach (int val in value) 
+        foreach (int val in value)
         {
             if (!value.Contains(val - 1)) //if value less than the current value is not available then only proceed else dont proceed 
             {
@@ -1807,9 +1808,146 @@ public class Problems
                     x = x + 1;
                     cnt += 1;
                 }
-                longest =Math.Max(longest, cnt);             
+                longest = Math.Max(longest, cnt);
             }
         }
         return longest;
+    }
+
+    //Set matrix to Zero
+    //Brute 
+    //TC=O(3N),SC=O(n)
+    public int[,] setMatrixZero(int[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+        int m = matrix.GetLength(1);
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    makeRowz(matrix, i, m);
+                    makeColumnz(matrix, j, n);
+                }
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i, j] == -1)
+                {
+                    matrix[i, j] = 0;
+                }
+            }
+        }
+        return matrix;
+    }
+
+    public void makeRowz(int[,] matrix, int rowIndex, int cols)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[rowIndex, j] = -1;
+        }
+    }
+    public void makeColumnz(int[,] matrix, int colIndex, int rows)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            matrix[i, colIndex] = -1;
+        }
+    }
+
+    //Brute Solution
+    //TC=O(2*n*m) SC=O(n)+o(m)
+    public int[,] setmatrixZero1(int[,] matrix) 
+    {
+        int n=matrix.GetLength(0);
+        int m=matrix.GetLength(1);
+        //create a row size array and column size array
+        int[] row=new int[n];
+        int[] col=new int[m];
+        //Go throught the matrix and find the zeros and mark row and colmn array
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (matrix[i, j] == 0) 
+                {
+                    row[i] = 1;
+                    col[j] = 1; 
+                }
+            }
+        }
+        //Change all the column and row array which is marked 
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = 0; j < m; j++) 
+            {
+                if (row[i] == 1 || col[j] == 1) 
+                {
+                    matrix[i, j] = 0;
+                }
+            }
+        }
+
+        return matrix;
+    }
+
+    //Optimal 
+    //TC=O(n*m)
+    //SC=O(1)
+    public void SetZeroes(int[][] matrix)
+    {
+        //int[] col = matrix[0][...];
+        //int[] row = matrix[..][0];
+        int col0 = 1;
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        for (int i = 0; i < n; i++)//mark all the row and column if 0 is present 
+        {
+            if (matrix[i][0] == 0) col0 = 0;
+            for (int j = 1; j < m; j++)
+            {
+
+                if (matrix[i][j] == 0)
+                {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        //Convert the row and column to 0 skipping 0th row and 0th column
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 1; j < m; j++)
+            {
+                if (matrix[i][j] != 0)
+                {
+                    if (matrix[i][0] == 0 || matrix[0][j] == 0)
+                    {
+                        matrix[i][j] = 0;
+                    }
+                }
+            }
+        }
+        //now convert row and column 
+        //first convert column
+        if (matrix[0][0] == 0)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                matrix[0][j] = 0;
+            }
+        }
+        if (col0 == 0)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i][0] = 0;
+            }
+        }
     }
 }
