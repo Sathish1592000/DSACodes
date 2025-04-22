@@ -1950,4 +1950,85 @@ public class Problems
             }
         }
     }
+
+    //Rotate Array by 90degrees
+    //Brute Solution
+    //TC=O(n^2)  SC =O(n^2)
+    public void Rotate90(int[][] matrix)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+
+        int[][] ans = new int[m][];
+        for (int i = 0; i < m; i++)
+        {
+            ans[i] = new int[n];
+        }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                ans[j][n - 1 - i] = matrix[i][j];
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                matrix[i][j] = ans[i][j];
+            }
+        }
+    }
+
+    //optimal soln
+    public void Rotate90P2(int[][] matrix) 
+    {
+        int n = matrix.Length;
+        int m= matrix[0].Length;
+
+        //Transpose -- Convert row-> Column
+        for (int i = 0; i < n-1; i++) 
+        {
+            for (int j = i + 1; j < n; j++) 
+            {
+                //swap
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+        //Reverse a matrix row 
+        for (int i = 0; i < n; i++) 
+        {
+            Array.Reverse(matrix[i]);
+        }
+    }
+
+    //Print Matrix in spiral 
+    //Only Optimal soln
+    public IList<int> spiral(int[][] matrix) 
+    {
+        int n = matrix.Length;
+        int m= matrix[0].Length;
+        int left = 0, right = m - 1, bottom = n - 1, top = 0;
+        IList<int> list = new List<int>();
+        //right
+        for(int i = left; i <= right; i++) { list.Add(matrix[top][i]); }top++;
+        //bottom
+        for (int i = top; i <= bottom; i++) { list.Add(matrix[i][right]); }right--;
+        //left 
+        if (top <= bottom) 
+        {
+            for (int i = right; i <= left; i--) { list.Add(matrix[bottom][i]); }
+            bottom--;
+
+        }
+        //top
+        if (left <= right) 
+        {
+            for (int i = bottom; i <= top; i--) { list.Add(matrix[left][i]); }
+            left++;
+        }
+        return list;
+    }
 }
