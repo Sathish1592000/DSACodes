@@ -2006,6 +2006,7 @@ public class Problems
 
     //Print Matrix in spiral 
     //Only Optimal soln
+    //TC = O(n*m) , SC=O(n*m)
     public IList<int> spiral(int[][] matrix) 
     {
         int n = matrix.Length;
@@ -2031,4 +2032,40 @@ public class Problems
         }
         return list;
     }
+
+    //Pascal Triangle Type 1 Problem =Find the Element in row, column place -->Find using nCr formula
+    //TC = O(r), SC = O(1)
+    public int pascaltri1(int row,int col) 
+    {
+        int result=resultant(row - 1, col - 1);
+        return result;
+    }
+    public int resultant(int n, int r) //formula nCr = n!/r!*(n-r)!
+    {
+        int res = 1;
+        for (int i = 0; i < r; i++) 
+        {
+            res = res * (n - i);
+            res = res / i + 1;
+        }
+        return res;
+    }
+
+    //Pascal Triangle Type 2 Problem = Print the row elemnt for the given row number
+    //TC=O(n) SC=O(1)
+    public void pascaltri2(int n)
+    {
+        int ans = 1;
+        Console.WriteLine(ans);
+        for (int i = 0; i < n; i++) 
+        {
+            ans = ans * (n - i);
+            ans = ans / i;
+            Console.WriteLine(ans);
+        }
+    }
+
+    //Pascal Triangle Type 3 Problem = Create a Pascal triangle for the given number of n rows
+
+
 }
