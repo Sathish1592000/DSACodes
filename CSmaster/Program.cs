@@ -48,6 +48,8 @@ using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.Immutable;
+using System.Globalization;
+using System.ComponentModel.Design;
 
 public class Problems
 {
@@ -1692,7 +1694,8 @@ public class Problems
             bool IsLeader = true;
             for (int j = i + 1; j < n; j++)
             {
-                if (arr[j] > arr[i]) {
+                if (arr[j] > arr[i])
+                {
                     IsLeader = false;
                     break;
                 }
@@ -1786,7 +1789,7 @@ public class Problems
     }
 
     //Optimal solution
-    
+
     public int longestsubsequence(int[] arr)
     {
         int n = arr.Length;
@@ -1862,31 +1865,31 @@ public class Problems
 
     //Brute Solution
     //TC=O(2*n*m) SC=O(n)+o(m)
-    public int[,] setmatrixZero1(int[,] matrix) 
+    public int[,] setmatrixZero1(int[,] matrix)
     {
-        int n=matrix.GetLength(0);
-        int m=matrix.GetLength(1);
+        int n = matrix.GetLength(0);
+        int m = matrix.GetLength(1);
         //create a row size array and column size array
-        int[] row=new int[n];
-        int[] col=new int[m];
+        int[] row = new int[n];
+        int[] col = new int[m];
         //Go throught the matrix and find the zeros and mark row and colmn array
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
-                if (matrix[i, j] == 0) 
+                if (matrix[i, j] == 0)
                 {
                     row[i] = 1;
-                    col[j] = 1; 
+                    col[j] = 1;
                 }
             }
         }
         //Change all the column and row array which is marked 
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < m; j++) 
+            for (int j = 0; j < m; j++)
             {
-                if (row[i] == 1 || col[j] == 1) 
+                if (row[i] == 1 || col[j] == 1)
                 {
                     matrix[i, j] = 0;
                 }
@@ -1981,15 +1984,15 @@ public class Problems
     }
 
     //optimal soln
-    public void Rotate90P2(int[][] matrix) 
+    public void Rotate90P2(int[][] matrix)
     {
         int n = matrix.Length;
-        int m= matrix[0].Length;
+        int m = matrix[0].Length;
 
         //Transpose -- Convert row-> Column
-        for (int i = 0; i < n-1; i++) 
+        for (int i = 0; i < n - 1; i++)
         {
-            for (int j = i + 1; j < n; j++) 
+            for (int j = i + 1; j < n; j++)
             {
                 //swap
                 int temp = matrix[i][j];
@@ -1998,7 +2001,7 @@ public class Problems
             }
         }
         //Reverse a matrix row 
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             Array.Reverse(matrix[i]);
         }
@@ -2007,25 +2010,27 @@ public class Problems
     //Print Matrix in spiral 
     //Only Optimal soln
     //TC = O(n*m) , SC=O(n*m)
-    public IList<int> spiral(int[][] matrix) 
+    public IList<int> spiral(int[][] matrix)
     {
         int n = matrix.Length;
-        int m= matrix[0].Length;
+        int m = matrix[0].Length;
         int left = 0, right = m - 1, bottom = n - 1, top = 0;
         IList<int> list = new List<int>();
         //right
-        for(int i = left; i <= right; i++) { list.Add(matrix[top][i]); }top++;
+        for (int i = left; i <= right; i++) { list.Add(matrix[top][i]); }
+        top++;
         //bottom
-        for (int i = top; i <= bottom; i++) { list.Add(matrix[i][right]); }right--;
+        for (int i = top; i <= bottom; i++) { list.Add(matrix[i][right]); }
+        right--;
         //left 
-        if (top <= bottom) 
+        if (top <= bottom)
         {
             for (int i = right; i <= left; i--) { list.Add(matrix[bottom][i]); }
             bottom--;
 
         }
         //top
-        if (left <= right) 
+        if (left <= right)
         {
             for (int i = bottom; i <= top; i--) { list.Add(matrix[left][i]); }
             left++;
@@ -2035,15 +2040,15 @@ public class Problems
 
     //Pascal Triangle Type 1 Problem =Find the Element in row, column place -->Find using nCr formula
     //TC = O(r), SC = O(1)
-    public int pascaltri1(int row,int col) 
+    public int pascaltri1(int row, int col)
     {
-        int result=resultant(row - 1, col - 1);
+        int result = resultant(row - 1, col - 1);
         return result;
     }
     public int resultant(int n, int r) //formula nCr = n!/r!*(n-r)!
     {
         int res = 1;
-        for (int i = 0; i < r; i++) 
+        for (int i = 0; i < r; i++)
         {
             res = res * (n - i);
             res = res / i + 1;
@@ -2057,7 +2062,7 @@ public class Problems
     {
         int ans = 1;
         Console.WriteLine(ans);
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             ans = ans * (n - i);
             ans = ans / i;
@@ -2066,6 +2071,220 @@ public class Problems
     }
 
     //Pascal Triangle Type 3 Problem = Create a Pascal triangle for the given number of n rows
+    public IList<IList<int>> GeneratePascal(int N)
+    {
+        IList<IList<int>> ansList = new List<IList<int>>();
+        for (int i = 0; i < N; i++)
+        {
+            ansList.Add(GenerateRow(i));
+        }
+        return ansList;
+    }
 
+    public IList<int> GenerateRow(int row)
+    {
+        int ans = 1;
+        IList<int> list = new List<int>();
+        list.Add(ans);
+        for (int col = 1; col < row; col++)
+        {
+            ans = ans * (row - col);
+            ans = ans * (col);
+            list.Add(ans);
+        }
+        return list;
+    }
 
+    //Majority n/3 times
+    //Brute Soln = TC =O(n^3) SC=O(n)
+    public List<int> Majn3(int[] arr)
+    {
+
+        int n = arr.Length;
+        int min = (n / 3) + 1;
+        List<int> list = new List<int>();
+        for (int i = 0; i < n - 1; i++)
+        {
+            int count = 0;
+
+            if (list.Count != 0 || list[0] != arr[i])
+            {
+                for (int j = 0; j < n - 1; j++)
+                {
+                    if (arr[i] == arr[j]) count++;
+                }
+                if (count > min)
+                {
+                    list.Add(arr[i]);
+                    break;
+                }
+            }
+
+        }
+        return list;
+    }
+
+    //Better Soln
+    //TC= O(nLogn) SC=O(n)
+    public IList<int> Majn3B(int[] arr)
+    {
+        int n = arr.Length;
+        int min = (n / 3) + 1;
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        IList<int> list = new List<int>();
+        for (int i = 0; i < n - 1; i++)
+        {
+            if (!map.ContainsKey(arr[i]))
+            {
+                map[arr[i]] = 1;
+            }
+            else
+                map[arr[i]]++;
+
+            if (map[arr[i]] == min)
+            {
+                list.Add(arr[i]);
+            }
+        }
+        return list;
+    }
+
+    //Optimal Soln 
+    public IList<int> Mah3O(int[] nums)
+    {
+        int n = nums.Length;
+        int cnt1 = 0, cnt2 = 0, ele1 = int.MinValue, ele2 = int.MinValue;
+        IList<int> list = new List<int>();
+        for (int i = 0; i < n; i++)
+        {
+            if (cnt1 == 0 && nums[i] != ele2)
+            {
+                cnt1 = 1;
+                cnt1 = nums[i];
+            }
+            else if (cnt2 == 0 && nums[i] != ele1)
+            {
+                cnt2 = 1;
+                cnt2 = nums[i];
+            }
+            else if (ele1 == nums[i]) { cnt1++; }
+            else if (ele2 == nums[i]) { cnt2++; }
+            else
+                cnt1--;
+            cnt2--;
+        }
+        //manually check whether the element are there or not and return 
+        int cntn1 = 0, cntn2 = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (ele1 == nums[i])
+            {
+                cntn1++;
+            }
+            if (ele2 == nums[i])
+            {
+                cntn1++;
+            }
+            int min = (n / 3) + 1;
+            if (ele1 >= min) list.Add(nums[i]);
+            if (ele2 >= min) list.Add(nums[i]);
+
+        }
+        return list;
+    }
+
+    //3Sum problem
+    //It will not run because Its Time complexity is too much 
+    //TC = O(n^3 + log(number of elements)) SC =2(no of element in triplets)
+    public IList<IList<int>> ThreeSum(int[] arr)
+    {
+        int n = arr.Length;
+        IList<IList<int>> list = new List<IList<int>>();
+        HashSet<List<int>> set = new HashSet<List<int>>();
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                for (int k = j + 1; k < n; k++)
+                {
+                    if (arr[i] + arr[j] + arr[k] == 0)
+                    {
+                        List<int> triplet = new List<int> { arr[i], arr[j], arr[k] };
+                        triplet.Sort();
+                        set.Add(triplet);
+                    }
+                }
+            }
+        }
+        foreach (var triplets in set)
+        {
+            list.Add(triplets);
+        }
+
+        return list;
+    }
+
+    //Better
+    //TC=O(n^2 log M) where M-> Size of array , SC=O(n) 
+    public IList<IList<int>> ThreeSumBetter(int[] nums)
+    {
+        HashSet<string> set = new HashSet<string>();
+        int n = nums.Length;
+        IList<IList<int>> ans = new List<IList<int>>();
+        for (int i = 0; i < n; i++)
+        {
+            HashSet<int> Hashset = new HashSet<int>();
+            for (int j = i + 1; j < n; j++)
+            {
+                int third = -(nums[i] + nums[j]);
+                if (Hashset.Contains(third))
+                {
+                    List<int> list = new List<int> { nums[i], nums[j], third };
+                    list.Sort();
+                    string key = string.Join(",", list);
+                    if (!set.Contains(key))
+                    {
+                        set.Add(key);
+                        ans.Add(list);
+                    }
+                }
+                Hashset.Add(nums[j]);
+            }
+        }
+
+        return ans;
+    }
+
+    //Optimal - Using Two Pointer Approach 
+    public IList<IList<int>> ThreeSumOptimal(int[] nums)
+    {
+        IList<IList<int>> ans = new List<IList<int>>();
+        int n = nums.Length;
+        Array.Sort(nums);
+
+        for (int i = 0; i < n; i++)
+        {
+
+            if (i > 0 && nums[i] == nums[i - 1]) continue; //skip duplicates for i
+            int j = i + 1, k = n - 1;
+            while (j < k)
+            {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum < 0) j++;
+                else if (sum > 0) k--;
+                else
+                {
+                    IList<int> list = new List<int> { nums[i], nums[j], nums[k] };
+                    j++;
+                    k--;
+                    //skip duplicates for j and k
+                    while (j < k && nums[j] == nums[j - 1]) j++;
+                    while (j < k && nums[k] == nums[k + 1]) k--;
+                    ans.Add(list);
+                }
+            }
+
+        }
+        return ans;
+    }
 }
