@@ -2256,6 +2256,7 @@ public class Problems
     }
 
     //Optimal - Using Two Pointer Approach 
+    //TC=O(nlogn +n*n) SC= O(no of nums)
     public IList<IList<int>> ThreeSumOptimal(int[] nums)
     {
         IList<IList<int>> ans = new List<IList<int>>();
@@ -2287,4 +2288,112 @@ public class Problems
         }
         return ans;
     }
+
+    //4 SUM Problem
+    //Brute Solution
+    //TC=n^4 SC=O(no of quads)*2
+    public IList<IList<int>> fourSumOptimal(int[] nums,int target)
+    {
+        IList<IList<int>> ans = new List<IList<int>>();
+        HashSet<List<int>> set = new HashSet<List<int>>();
+        int n=nums.Length;
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = i + 1; j < n; j++) 
+            {
+                for (int k = j + 1; k < n; k++) 
+                {
+                    for (int l = k + 1; k < n; k++) 
+                    {
+                        long sum = nums[i] + nums[j];
+                        sum += nums[k];
+                        sum += nums[l];
+                        if (sum == target) 
+                        {
+                            List<int> list = new List<int> { nums[i], nums[j], nums[k], nums[l] };
+                            list.Sort();
+                            set.Add(list);
+                        }
+                    }
+                }
+            }
+        }
+        foreach (var li in set) 
+        {
+            ans.Add(li);
+        }
+        return ans;
+    }
+
+    //Better soln 
+    //TC = n^3 log n SC=O(n) and O(no of quads)*2
+    public IList<IList<int>> fourSumBetter(int[] nums, int target) 
+    {
+        int n = nums.Length;
+        HashSet<int> set = new HashSet<int>();
+        HashSet<List<int>> lset = new HashSet<List<int>>();
+        IList < IList<int> > ans = new List<IList<int>>();
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = i + 1; j < n; j++) 
+            {
+                for(int k = j + 1; k < n; k++) 
+                {
+                    long sum = nums[i] + nums[j] + nums[k];
+                    int fourth = target - (((int)sum));
+                    if (set.Contains(fourth)) 
+                    {
+                        List<int> list = new List<int> { nums[i], nums[j], nums[k], fourth };
+                        lset.Add(list);
+                    }
+                }
+            }
+        }
+        foreach (var li in lset) 
+        {
+            ans.Add(li);
+        }
+        return ans;
+    }
+
+    //Optimal Solution ~ to 3 Sum
+    //Tc O(n^3) SC=O(no of qurds) using to return the problem 
+    public IList<IList<int>> FourSum(int[] nums, int target)
+    {
+        IList<IList<int>> ans = new List<IList<int>>();
+        int n = nums.Length;
+        Array.Sort(nums);
+        for (int i = 0; i < n; i++)
+        {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < n; j++)
+            {
+                if (j != (i + 1) && nums[j] == nums[j - 1]) continue;
+
+                int k = j + 1, l = n - 1;
+                while (k < l)
+                {
+                    long sum = nums[i] + nums[j];
+                    sum += nums[k];
+                    sum += nums[l];
+
+                    if (sum == target)
+                    {
+                        List<int> list = new List<int> { nums[i], nums[j], nums[k], nums[l] };
+                        ans.Add(list);
+                        k++; l--;
+                        while (k < l && nums[k] == nums[k - 1]) k++;
+                        while (k < l && nums[l] == nums[l + 1]) l--;
+                    }
+                    else if (sum < target) k++;
+                    else l--;
+                }
+            }
+
+        }
+        return ans;
+
+    }
+
+
 }
