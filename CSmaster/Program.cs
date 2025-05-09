@@ -50,6 +50,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.ComponentModel.Design;
+using System.Runtime.Intrinsics.X86;
+using System.Collections.Specialized;
 
 public class Problems
 {
@@ -2292,23 +2294,23 @@ public class Problems
     //4 SUM Problem
     //Brute Solution
     //TC=n^4 SC=O(no of quads)*2
-    public IList<IList<int>> fourSumOptimal(int[] nums,int target)
+    public IList<IList<int>> fourSumOptimal(int[] nums, int target)
     {
         IList<IList<int>> ans = new List<IList<int>>();
         HashSet<List<int>> set = new HashSet<List<int>>();
-        int n=nums.Length;
-        for (int i = 0; i < n; i++) 
+        int n = nums.Length;
+        for (int i = 0; i < n; i++)
         {
-            for (int j = i + 1; j < n; j++) 
+            for (int j = i + 1; j < n; j++)
             {
-                for (int k = j + 1; k < n; k++) 
+                for (int k = j + 1; k < n; k++)
                 {
-                    for (int l = k + 1; k < n; k++) 
+                    for (int l = k + 1; k < n; k++)
                     {
                         long sum = nums[i] + nums[j];
                         sum += nums[k];
                         sum += nums[l];
-                        if (sum == target) 
+                        if (sum == target)
                         {
                             List<int> list = new List<int> { nums[i], nums[j], nums[k], nums[l] };
                             list.Sort();
@@ -2318,7 +2320,7 @@ public class Problems
                 }
             }
         }
-        foreach (var li in set) 
+        foreach (var li in set)
         {
             ans.Add(li);
         }
@@ -2327,21 +2329,21 @@ public class Problems
 
     //Better soln 
     //TC = n^3 log n SC=O(n) and O(no of quads)*2
-    public IList<IList<int>> fourSumBetter(int[] nums, int target) 
+    public IList<IList<int>> fourSumBetter(int[] nums, int target)
     {
         int n = nums.Length;
         HashSet<int> set = new HashSet<int>();
         HashSet<List<int>> lset = new HashSet<List<int>>();
-        IList < IList<int> > ans = new List<IList<int>>();
-        for (int i = 0; i < n; i++) 
+        IList<IList<int>> ans = new List<IList<int>>();
+        for (int i = 0; i < n; i++)
         {
-            for (int j = i + 1; j < n; j++) 
+            for (int j = i + 1; j < n; j++)
             {
-                for(int k = j + 1; k < n; k++) 
+                for (int k = j + 1; k < n; k++)
                 {
                     long sum = nums[i] + nums[j] + nums[k];
                     int fourth = target - (((int)sum));
-                    if (set.Contains(fourth)) 
+                    if (set.Contains(fourth))
                     {
                         List<int> list = new List<int> { nums[i], nums[j], nums[k], fourth };
                         lset.Add(list);
@@ -2349,7 +2351,7 @@ public class Problems
                 }
             }
         }
-        foreach (var li in lset) 
+        foreach (var li in lset)
         {
             ans.Add(li);
         }
@@ -2392,6 +2394,183 @@ public class Problems
 
         }
         return ans;
+
+    }
+
+    //Longest subarray equals sum =0 
+    //Brute Soln 
+    //TC = O(n^3) SC =O(1)
+    public int LongestSubarrayzeroB(int[] arr)
+    {
+        int n = arr.Length;
+        int sum = 0, length = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                for (int k = i; k < j; k++)
+                {
+                    sum += arr[k];
+                    if (arr[k] == 0)
+                    {
+                        length = Math.Max(length, j - i + 1);
+                    }
+                }
+            }
+        }
+        return length;
+    }
+
+    //In Better Soln remove k loop so that TC=O(n^2) SC =O(1)
+
+    //Optimal soln 
+    //TC=O(Nlogn) SC=(1)
+    public int LongestSubarrayzero(int[] arr)
+    {
+        int n = arr.Length;
+        Dictionary<int, int> map = new Dictionary<int, int>();//prefixsum ,Index
+        int length = 0, prefixSum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            prefixSum += arr[i];
+            if (prefixSum == 0)
+            {
+                length = Math.Max(length, i + 1);
+            }
+            else if (map.ContainsKey(prefixSum))
+            {
+                length = Math.Max(length, i - map[prefixSum]);
+            }
+            else
+            {
+                map[prefixSum] = i;
+            }
+        }
+        return length;
+    }
+
+    //Longest subarray equals Xor  
+    //Brute Soln 
+    //TC = O(n^3) SC =O(1)
+    public int LongestSubarrayXorB(int[] arr, int res)
+    {
+        int n = arr.Length;
+        int sum = 0, length = 0, Xor = 0, cnt = 0; ;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                Xor = Xor ^ arr[j];
+                if (Xor == res)
+                {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    //TC=O(n) SC=O(nlogn)
+    public int LongestSubarrayXoRO(int[] arr, int k)
+    {
+        int n = arr.Length;
+        int Xor = 0, cnt = 0;
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        map[Xor]++;//{0,1}
+        for (int i = 0; i < n; i++)
+        {
+            Xor = Xor ^ arr[i];
+            int x = Xor ^ k;
+            cnt += map[x];
+            map[Xor]++;
+
+        }
+        return cnt;
+    }
+
+    //Merge Overlapping SubIntervals
+    //TC = O(2N)+nlogn SC=(n)
+    public int[][] Merge(int[][] intervals)
+    {
+        int n = intervals.Length;
+        if (intervals == null || intervals.Length == 0)
+            return new int[0][];
+
+        // Sort intervals by start time
+        Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+
+        List<int[]> merged = new List<int[]>();
+        for (int i = 0; i < n; i++)
+        {
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+            if (merged.Count != 0 && end <= merged[merged.Count - 1][1])//end = (1,6),mergent.Count-1= back ->(6) =>{2,4}{1,6} if 4<=6
+            {
+                continue;
+            }
+            for (int j = i + 1; j < n; j++)
+            {
+                //overlapping check 
+                if (intervals[j][0] <= end)
+                {
+                    end = Math.Max(end, intervals[j][1]);
+                }
+                else break;
+            }
+            merged.Add(new int[] { start, end });
+        }
+        return merged.ToArray();
+    }
+
+    //Optimal Soln
+    public int[][] MergeOptimal(int[][] intervals)
+    {
+        int n = intervals.Length;
+        Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+        List<int[]> ans = new List<int[]>();
+        for (int i = 0; i < n; i++)
+        {
+            //if the list is empty
+            if (ans.Count == 0 || intervals[i][0] > ans[ans.Count - 1][1])
+            {
+                ans.Add(intervals[i]);
+            }
+            //push the overlapping intervals in the array
+            else
+            {
+                ans[ans.Count - 1][1] = Math.Max(ans[ans.Count - 1][1], intervals[i][1]);
+            }
+        }
+        return ans.ToArray();
+
+    }
+
+    //Merge 2 Sorted Array without extra space 
+    public void MergeArrays(int[] nums1, int m, int[] nums2, int n)
+    {
+        int left = m - 1, right = 0;
+        while (left >= 0 && right < n)
+        {
+            if (nums1[left] > nums2[right])
+            {
+                int temp = nums1[left];
+                nums1[left] = nums2[right];
+                nums2[right] = temp;
+                left--;
+                right++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        Array.Sort(nums1, 0, m);
+        Array.Sort(nums2);
+        // Step 3: Copy nums2 to the tail of nums1
+        for (int i = 0; i < n; i++)
+        {
+            nums1[m + i] = nums2[i];
+        }
 
     }
 
