@@ -2574,5 +2574,51 @@ public class Problems
 
     }
 
+    public void gapMethodMerge(int[] nums1, int[] nums2) 
+    {
+        int n=nums1.Length;
+        int m=nums2.Length;
+        int len = n + m;
+        int gap = (len / 2) + (len % 2);
+        while (gap > 0) 
+        {
+            int left = 0;
+            int right = left + gap;
+            while(right < len) 
+            {
+                //three condition 
+                //1st -> left pointer on left array and right pointer on right array
+                if (left < n && right >= n) 
+                {
+                    swap(nums1, nums2, left, right-n);
+                }
+                //2nd -> left pointer on right and right pointer is on right 
+                if (left >= n)
+                {
+                    swap(nums2, nums2, left-n, right);
+                }
+                else 
+                {
+                    swap(nums1, nums1, left, right);
+                }
+                left++;
+                right++;
+            }
+            if (gap == 1) break;
+            gap = (gap / 2) + (gap % 2);//reduce the gap and seal it if it is odd
+        }
+    }
+
+    //method to swap left >right
+    public void swap(int[] arr1, int[] arr2, int ind1, int ind2) 
+    {
+        if (arr1[ind1] > arr2[ind2]) 
+        {
+            int temp = arr1[ind1];
+            arr1[ind1] = arr2[ind2];
+            arr2[ind2] = temp;
+        }
+    }
+
 
 }
