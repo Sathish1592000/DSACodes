@@ -2574,30 +2574,30 @@ public class Problems
 
     }
 
-    public void gapMethodMerge(int[] nums1, int[] nums2) 
+    public void gapMethodMerge(int[] nums1, int[] nums2)
     {
-        int n=nums1.Length;
-        int m=nums2.Length;
+        int n = nums1.Length;
+        int m = nums2.Length;
         int len = n + m;
         int gap = (len / 2) + (len % 2);
-        while (gap > 0) 
+        while (gap > 0)
         {
             int left = 0;
             int right = left + gap;
-            while(right < len) 
+            while (right < len)
             {
                 //three condition 
                 //1st -> left pointer on left array and right pointer on right array
-                if (left < n && right >= n) 
+                if (left < n && right >= n)
                 {
-                    swap(nums1, nums2, left, right-n);
+                    swap(nums1, nums2, left, right - n);
                 }
                 //2nd -> left pointer on right and right pointer is on right 
                 if (left >= n)
                 {
-                    swap(nums2, nums2, left-n, right);
+                    swap(nums2, nums2, left - n, right);
                 }
-                else 
+                else
                 {
                     swap(nums1, nums1, left, right);
                 }
@@ -2610,9 +2610,9 @@ public class Problems
     }
 
     //method to swap left >right
-    public void swap(int[] arr1, int[] arr2, int ind1, int ind2) 
+    public void swap(int[] arr1, int[] arr2, int ind1, int ind2)
     {
-        if (arr1[ind1] > arr2[ind2]) 
+        if (arr1[ind1] > arr2[ind2])
         {
             int temp = arr1[ind1];
             arr1[ind1] = arr2[ind2];
@@ -2620,5 +2620,71 @@ public class Problems
         }
     }
 
+    //Find the Missing and repeating numbers 
+    //Brute TC=O(n^2) SC=(1)
+    public int[] MissandRepNum(int[] arr)
+    {
+        int n = arr.Length;
+        int count = 0, missingNum = -1, RepeatingNum = -1;
 
+        for (int i = 1; i <= n; i++)
+        {
+            count = 0;
+            for (int j = 0; j < n; j++)
+            {
+                if (arr[j] == i) count++;
+            }
+            if (count == 2) RepeatingNum = i;
+            if (count == 0) missingNum = i;
+
+            if (RepeatingNum != -1 && missingNum != -1)
+            {
+                break;
+            }
+        }
+
+        return new int[] { RepeatingNum, missingNum };
+    }
+
+    //Better Soln
+    //TC=O(2n), SC=O(n)
+    public int[] MissAndRepNumB(int[] arr) 
+    {
+        int n = arr.Length;
+        int[] hasharr= new int[n+1];
+        for (int i = 0; i < n; i++) 
+        {
+            hasharr[arr[i]]++;
+        }
+        int repNum = -1, missNum = -1;
+        for (int i = 0; i < n; i++) 
+        {
+            if (hasharr[i] == 2) repNum = i;
+            else if (hasharr[i] == 0) missNum = i;
+            if (repNum == -1 && missNum == -1) break;
+        }
+        return new int[] { repNum, missNum };
+    }
+
+    //Optimal
+    //Mathematical soln
+    public int[] MissAndRepNumO(int[] arr) 
+    {
+        int n = arr.Length;
+        long SumN = 0, SumAN = 0, SumNN = 0, SumANN = 0;
+        SumN = n * (n + 1) / 2;
+        SumNN = n * (n + 1)*(2*n + 1) / 6;
+        for (int i = 0; i < n; i++) 
+        {
+            SumAN += arr[i];
+            SumANN += arr[i] * arr[i];
+        }
+        long val1 = SumAN - SumN;//x-y
+        long val2 = SumANN- SumNN;
+        val2 = val2 / val1;//x+y
+        long x = (val1 + val2)/2;
+        long y = x - val1;
+        return new int[] { (int)x, (int)y };
+
+    }
 }
