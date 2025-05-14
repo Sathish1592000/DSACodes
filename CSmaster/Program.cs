@@ -769,7 +769,7 @@ public class Problems
 
 
     }
-
+    #region
     public void MergeSort2(int[] arr, int low, int high) //5, 4, 6, 2, 3, 5, 6  // Time Complexity = N log base 2 n
     {
         if (low == high) return;
@@ -818,6 +818,7 @@ public class Problems
 
 
     }
+    #endregion
 
     public void QuickSort(int[] arr, int low, int high) ///5, 4, 6, 2, 3, 5, 6
     {
@@ -2668,6 +2669,7 @@ public class Problems
 
     //Optimal
     //Mathematical soln
+    //TC=O(n),SC=O(n)
     public int[] MissAndRepNumO(int[] arr) 
     {
         int n = arr.Length;
@@ -2687,4 +2689,84 @@ public class Problems
         return new int[] { (int)x, (int)y };
 
     }
+
+    //Count Inversion in an array -->return number of pairs where arr[i]>arr[j]
+    //Brute TC=O(n^2) SC=O(1)
+    public int CountInversionB(int[] arr) 
+    {
+        int n = arr.Length;
+        int cnt = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = 0; j < n; j++) 
+            {
+                if (arr[i] > arr[j]) cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+    #region
+    //Optimal- Using Merge Sort
+    //TC = O(nLogn) SC=O(n)
+    //Merge Sort algo
+    public int MergeI(int[] arr, int low, int middle, int high)
+    {
+        List<int> temp = new List<int>();
+        int left = low;
+        int right = middle + 1;
+        int cnt = 0;
+        while (left <= middle && right <= high)
+        {
+            
+            if (arr[left] <= arr[right])
+            {
+                temp.Add(arr[left]);
+                left++;
+            }
+            else//right is smaller 
+            {
+                temp.Add(arr[right]);
+                cnt += (middle - left + 1);
+                right++;
+            }
+            
+        }
+        while (left <= middle)
+        {
+            temp.Add(arr[left]);
+            left++;
+
+        }
+        while (right <= high)
+        {
+            temp.Add(arr[right]);
+            right++;
+        }
+
+        //put back in an original array from temp
+        for (int i = low; i <= high; i++)
+        {
+            arr[i] = temp[i - low];
+        }
+        return cnt;
+    } //Here we need to convey that we are alering the data
+    public int MergeSort2I(int[] arr, int low, int high) //5, 4, 6, 2, 3, 5, 6  // Time Complexity = N log base 2 n
+    {
+        int cnt = 0;
+        if (low == high) return cnt;
+        int n = arr.Length;
+        int middle = (low + high) / 2;
+        cnt+=MergeSort2I(arr, low, middle);
+        cnt+=MergeSort2I(arr, middle + 1, high);
+        cnt+= MergeI(arr, low, middle, high);
+        return cnt;
+
+    }
+    public int CountInversionO(int[] arr) 
+    {
+        int n = arr.Length;
+        return MergeSort2I(arr, 0, n - 1);
+    }
+    #endregion
 }
