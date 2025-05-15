@@ -52,6 +52,8 @@ using System.Globalization;
 using System.ComponentModel.Design;
 using System.Runtime.Intrinsics.X86;
 using System.Collections.Specialized;
+using System.Security.AccessControl;
+using System.Reflection;
 
 public class Problems
 {
@@ -2706,7 +2708,7 @@ public class Problems
         return cnt;
     }
 
-    #region
+    #region //Count Inversion
     //Optimal- Using Merge Sort
     //TC = O(nLogn) SC=O(n)
     //Merge Sort algo
@@ -2767,6 +2769,83 @@ public class Problems
     {
         int n = arr.Length;
         return MergeSort2I(arr, 0, n - 1);
+    }
+    #endregion
+
+    #region //Reverse pair
+    public int countPairs(int[] arr, int low, int mid, int high) 
+    {
+        int cnt = 0;
+        int right = mid + 1;
+        for(int i = low; i <= mid; i++) 
+        {
+            while (right <= high && (long)arr[i] > 2L * arr[right])
+            {
+                right++;  
+            }
+            cnt = cnt + (right - (mid + 1));
+        }
+        
+        return cnt;
+    }
+    public int MergeSort2R(int[] arr, int low, int high) //5, 4, 6, 2, 3, 5, 6  // Time Complexity = N log base 2 n
+    {
+        int cnt = 0;
+        if (low == high) return cnt ;
+        int n = arr.Length;
+        int middle = (low + high) / 2;
+        cnt+=MergeSort2R(arr, low, middle);//count got while splitted time
+        cnt+=MergeSort2R(arr, middle + 1, high);//count got while spliited time
+        cnt+= countPairs(arr, low, middle, high);
+        MergeR(arr, low, middle, high);
+        return cnt;
+
+    }
+    public void MergeR(int[] arr, int low, int middle, int high)
+    {
+        List<int> temp = new List<int>();
+        int left = low;
+        int right = middle + 1;
+        while (left <= middle && right <= high)
+        {
+            if (arr[left] <= arr[right])
+            {
+                temp.Add(arr[left]);
+                left++;
+            }
+            else
+            {
+                temp.Add(arr[right]);
+                right++;
+            }
+        }
+        while (left <= middle)
+        {
+            temp.Add(arr[left]);
+            left++;
+
+        }
+        while (right <= high)
+        {
+            temp.Add(arr[right]);
+            right++;
+        }
+
+        //put back in an original array from temp
+        for (int i = low; i <= high; i++)
+        {
+            arr[i] = temp[i - low];
+        }
+
+
+    }
+
+    public int ReversePairs(int[] nums)
+    {
+        int n=nums.Length;
+        int low = 0, high = n - 1;
+        int cnt = MergeSort2R(nums,low,high);
+        return cnt;
     }
     #endregion
 }
