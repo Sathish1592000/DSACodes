@@ -54,6 +54,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Collections.Specialized;
 using System.Security.AccessControl;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 public class Problems
 {
@@ -133,7 +134,7 @@ public class Problems
         int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
         int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
         int[] arr6 = new int[] { 3, 1, -2, -5, 2, -4 };
-        int[] arr7 = new int[] { 1, 3, 2 };
+        int[] arr7 = new int[] { 2, 3, -2, 4 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
@@ -167,8 +168,8 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //    }
 
-        int result1 = prb.longestsubsequence1(arr);
-        Console.WriteLine("The longest sub array is : " + result1);
+        int result1 = prb.maxProdBrt(arr7);
+        Console.WriteLine("The max sub array is : " + result1);
         //int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
         //Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
@@ -2651,16 +2652,16 @@ public class Problems
 
     //Better Soln
     //TC=O(2n), SC=O(n)
-    public int[] MissAndRepNumB(int[] arr) 
+    public int[] MissAndRepNumB(int[] arr)
     {
         int n = arr.Length;
-        int[] hasharr= new int[n+1];
-        for (int i = 0; i < n; i++) 
+        int[] hasharr = new int[n + 1];
+        for (int i = 0; i < n; i++)
         {
             hasharr[arr[i]]++;
         }
         int repNum = -1, missNum = -1;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             if (hasharr[i] == 2) repNum = i;
             else if (hasharr[i] == 0) missNum = i;
@@ -2672,43 +2673,43 @@ public class Problems
     //Optimal
     //Mathematical soln
     //TC=O(n),SC=O(n)
-    public int[] MissAndRepNumO(int[] arr) 
+    public int[] MissAndRepNumO(int[] arr)
     {
         int n = arr.Length;
         long SumN = 0, SumAN = 0, SumNN = 0, SumANN = 0;
         SumN = n * (n + 1) / 2;
-        SumNN = n * (n + 1)*(2*n + 1) / 6;
-        for (int i = 0; i < n; i++) 
+        SumNN = n * (n + 1) * (2 * n + 1) / 6;
+        for (int i = 0; i < n; i++)
         {
             SumAN += arr[i];
             SumANN += arr[i] * arr[i];
         }
         long val1 = SumAN - SumN;//x-y
-        long val2 = SumANN- SumNN;
+        long val2 = SumANN - SumNN;
         val2 = val2 / val1;//x+y
-        long x = (val1 + val2)/2;
+        long x = (val1 + val2) / 2;
         long y = x - val1;
         return new int[] { (int)x, (int)y };
 
     }
 
+
+    #region //Count Inversion
     //Count Inversion in an array -->return number of pairs where arr[i]>arr[j]
     //Brute TC=O(n^2) SC=O(1)
-    public int CountInversionB(int[] arr) 
+    public int CountInversionB(int[] arr)
     {
         int n = arr.Length;
         int cnt = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < n; j++) 
+            for (int j = 0; j < n; j++)
             {
                 if (arr[i] > arr[j]) cnt += 1;
             }
         }
         return cnt;
     }
-
-    #region //Count Inversion
     //Optimal- Using Merge Sort
     //TC = O(nLogn) SC=O(n)
     //Merge Sort algo
@@ -2720,7 +2721,7 @@ public class Problems
         int cnt = 0;
         while (left <= middle && right <= high)
         {
-            
+
             if (arr[left] <= arr[right])
             {
                 temp.Add(arr[left]);
@@ -2732,7 +2733,7 @@ public class Problems
                 cnt += (middle - left + 1);
                 right++;
             }
-            
+
         }
         while (left <= middle)
         {
@@ -2759,13 +2760,13 @@ public class Problems
         if (low == high) return cnt;
         int n = arr.Length;
         int middle = (low + high) / 2;
-        cnt+=MergeSort2I(arr, low, middle);
-        cnt+=MergeSort2I(arr, middle + 1, high);
-        cnt+= MergeI(arr, low, middle, high);
+        cnt += MergeSort2I(arr, low, middle);
+        cnt += MergeSort2I(arr, middle + 1, high);
+        cnt += MergeI(arr, low, middle, high);
         return cnt;
 
     }
-    public int CountInversionO(int[] arr) 
+    public int CountInversionO(int[] arr)
     {
         int n = arr.Length;
         return MergeSort2I(arr, 0, n - 1);
@@ -2773,30 +2774,33 @@ public class Problems
     #endregion
 
     #region //Reverse pair
-    public int countPairs(int[] arr, int low, int mid, int high) 
+
+    //Reverse Pair -->return number of pairs where arr[i]>2*arr[j]
+    //TC=O(2nlogn) SC=O(n)
+    public int countPairs(int[] arr, int low, int mid, int high)
     {
         int cnt = 0;
         int right = mid + 1;
-        for(int i = low; i <= mid; i++) 
+        for (int i = low; i <= mid; i++)
         {
             while (right <= high && (long)arr[i] > 2L * arr[right])
             {
-                right++;  
+                right++;
             }
             cnt = cnt + (right - (mid + 1));
         }
-        
+
         return cnt;
     }
     public int MergeSort2R(int[] arr, int low, int high) //5, 4, 6, 2, 3, 5, 6  // Time Complexity = N log base 2 n
     {
         int cnt = 0;
-        if (low == high) return cnt ;
+        if (low == high) return cnt;
         int n = arr.Length;
         int middle = (low + high) / 2;
-        cnt+=MergeSort2R(arr, low, middle);//count got while splitted time
-        cnt+=MergeSort2R(arr, middle + 1, high);//count got while spliited time
-        cnt+= countPairs(arr, low, middle, high);
+        cnt += MergeSort2R(arr, low, middle);//count got while splitted time
+        cnt += MergeSort2R(arr, middle + 1, high);//count got while spliited time
+        cnt += countPairs(arr, low, middle, high);
         MergeR(arr, low, middle, high);
         return cnt;
 
@@ -2842,10 +2846,102 @@ public class Problems
 
     public int ReversePairs(int[] nums)
     {
-        int n=nums.Length;
+        int n = nums.Length;
         int low = 0, high = n - 1;
-        int cnt = MergeSort2R(nums,low,high);
+        int cnt = MergeSort2R(nums, low, high);
         return cnt;
     }
     #endregion
+
+    //Maximum Product in a Subarray
+    //TC=O(n^2) SC=O(1)
+    public int maxProdBrt(int[] arr)
+    {
+        int n = arr.Length;
+        int maxProd = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                int prod = 1;
+                for (int k = i; k <= j; k++)
+                {
+                    prod = prod * arr[k];
+                }
+                maxProd = Math.Max(maxProd, prod);
+            }
+        }
+        return maxProd;
+    }
+
+    //Better Soln
+    //TC =O(n^2) SC=O(1)
+    public int maxProdBetr(int[] arr)
+    {
+        int n = arr.Length;
+        int maxProd = int.MinValue;
+        for (int i = 0; i < n; i++)
+        {
+            int prod = 1;
+            for (int j = i; j < n; j++)
+            {
+                prod = prod * arr[j];
+                maxProd = Math.Max(maxProd, prod);
+            }
+
+        }
+        return maxProd;
+    }
+
+    //Optimal Solution 
+    //TC=O(n^2) SC=O(1)
+    public int maxProdOptml(int[] arr) 
+    {
+        int n = arr.Length;
+        int prefix = 1, suffix = 1, maxProd = int.MinValue;
+        for (int i = 0; i < n; i++) 
+        {
+            if(prefix==0) prefix= 1;
+            if(suffix==0) suffix= 1;
+            prefix = prefix * arr[i];
+            suffix = suffix * arr[n-i-1];
+            maxProd= Math.Max(maxProd, Math.Max(prefix,suffix));
+        }
+        return maxProd;
+    }
+
+
+    ////////////////////////////////////////////////////// -  Binary Search - //////////////////////////////////////////////
+    //Iterative method
+    public int BSearchLoop(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) high = mid - 1;
+            else low = mid + 1;
+        }
+        return -1;
+    }
+
+    //Recursive method
+    //TC=O(log(base2)n) SC=O(1)
+    public int Search(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1;
+        return BinarySearch(nums, low, high, target);
+    }
+    public int BinarySearch(int[] nums, int low, int high, int target)
+    {
+        if (low > high) return -1;
+        int mid = (low + high) / 2;
+        if (nums[mid] == target) return mid;
+        else if (nums[mid] > target) return BinarySearch(nums, low, mid - 1, target);
+        return BinarySearch(nums, mid + 1, high, target);
+    }
+
 }
