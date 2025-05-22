@@ -602,6 +602,20 @@ public class Problems
         if (a == 0) return b;
         else return a;
     }
+
+    //Running Sum Prob
+    public int[] RunningSum(int[] nums)
+    {
+        int n = nums.Length, sum = 0;
+        List<int> ans = new List<int>();
+        //ans.Add(nums[0]);
+        for (int i = 0; i < n; i++)
+        {
+            sum += nums[i];
+            ans.Add(sum);
+        }
+        return ans.ToArray();
+    }
     #region 
 
     //public int[] SelectionSort2(int[] a)
@@ -2895,17 +2909,17 @@ public class Problems
 
     //Optimal Solution 
     //TC=O(n^2) SC=O(1)
-    public int maxProdOptml(int[] arr) 
+    public int maxProdOptml(int[] arr)
     {
         int n = arr.Length;
         int prefix = 1, suffix = 1, maxProd = int.MinValue;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            if(prefix==0) prefix= 1;
-            if(suffix==0) suffix= 1;
+            if (prefix == 0) prefix = 1;
+            if (suffix == 0) suffix = 1;
             prefix = prefix * arr[i];
-            suffix = suffix * arr[n-i-1];
-            maxProd= Math.Max(maxProd, Math.Max(prefix,suffix));
+            suffix = suffix * arr[n - i - 1];
+            maxProd = Math.Max(maxProd, Math.Max(prefix, suffix));
         }
         return maxProd;
     }
@@ -2944,4 +2958,102 @@ public class Problems
         return BinarySearch(nums, mid + 1, high, target);
     }
 
+    //Lower Bound
+    //TC=O(log(base2)n) SC=O(1)
+    public int LowerBound(int[] nums,int x) 
+    {
+        int n= nums.Length;
+        int low=0,high= n - 1,mid = 0 ;
+        int ans = n;
+        while (low <= high) 
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] >= x)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
+
+    //Upper Bound
+    //TC=O(log(base2)n) SC=O(1)
+    public int UpperBound(int[] nums, int x)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        int ans = n;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] > x)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
+
+    //Search and Insert ~ to lower bound
+    //TC=O(log(base2)n) SC=O(1)
+    public int SearchandInsert(int[] nums, int x)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        int ans = n;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] >= x)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
+
+    //floor and ceil 
+    //floor = largest number in an array <= x;
+    public int floor(int[] nums, int x)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        int ans = n;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] <= x)
+            {
+                ans = nums[mid];
+                low= mid - 1;
+            }
+            else high = mid - 1;
+        }
+        return ans;
+    }
+
+    //ceil = smallest number in an array >= x;-->lower bound (here need to return the number not index)
+    public int ceil(int[] nums, int x)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        int ans = n;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] >= x)
+            {
+                ans = nums[mid];
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
 }
