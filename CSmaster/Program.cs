@@ -2924,7 +2924,7 @@ public class Problems
         return maxProd;
     }
 
-
+    #region Binary Search
     ////////////////////////////////////////////////////// -  Binary Search - //////////////////////////////////////////////
     //Iterative method
     public int BSearchLoop(int[] nums, int target)
@@ -3056,4 +3056,123 @@ public class Problems
         }
         return ans;
     }
+
+    //First and Last Occurances
+    //Brute TC=O(n)
+    public int[] fandloccurance(int[] nums, int x) 
+    {
+        int n = nums.Length;
+        int first = -1, last = -1;
+        for (int i = 0; i < n; i++) 
+        {
+            if (nums[i] == x) 
+            {
+                first = i;
+            }
+            last= i;
+        }
+        return new int[] { first, last };
+    }
+
+    //Binary Search using lower and upper bound 
+    //TC =2*(log(base2)n)
+    public int[] SearchRange(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int lb = LowerBound(nums, target);
+        int ub = UpperBound(nums, target);
+        ub = ub - 1;
+        if (lb >= n || nums[lb] != target)
+        {
+            return new int[] { -1, -1 };
+        }
+        else
+            return new int[] { lb, ub };
+    }
+
+    //Only Binary Search
+    //TC=n(logb2n)
+    public int firstOccurance(int[] nums, int target) 
+    {
+        int n = nums.Length;
+        int fo = -1;
+        int low = 0, high = n - 1, mid = 0;
+        while (low <= high) 
+        {
+            mid=(low+high)/2;
+            if (nums[mid] >= target)
+            {
+                fo = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return fo;
+    }
+    public int LastOccurance(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int lo = -1;
+        int low = 0, high = n - 1, mid = 0;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] >= target)
+            {
+                lo = mid;
+                low = mid + 1;
+                
+            }
+            else
+                high = mid - 1;
+        }
+        return lo;
+    }
+
+    public Tuple<int,int> SearchRangeM2(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int first=firstOccurance(nums, target);
+        if (first == -1) return new Tuple<int, int>(-1,-1);
+        int last=LastOccurance(nums, target);
+        return new Tuple<int,int>(first, last);
+    }
+    //Number of occurance
+    public int countOccurance(int[] arr,int target) 
+    {
+        int count = 0;
+        Tuple<int, int> ans = SearchRangeM2(arr, target);
+        if (ans.Item1 == -1) return 0;
+        return ans.Item1-ans.Item2;
+    }
+
+    //Search in Sorted Array
+    //TC=n(nlogb2n)
+    public int SortedSearch(int[] arr, int target) 
+    {
+        int n = arr.Length;
+        int low = 0, high = n - 1, mid = 0;
+        while (low <= high) 
+        {
+            mid = (low + high) / 2;
+            if (arr[mid] == target) return mid;
+            //left sorted
+            else if (arr[low] <= arr[mid])
+            {
+                //tell whether it lies between low to mid
+                if (arr[low] <= target && target <= arr[mid]) high = mid - 1;
+                else low = mid + 1;
+            }
+            //right sorted
+            else
+                //tell whether it lies between low to mid
+                if (arr[mid] <= target && target <= arr[high]) low = mid + 1;
+                else high = mid - 1;
+
+        }
+        return -1;
+    }
+
+
+    #endregion Binary Search
 }
