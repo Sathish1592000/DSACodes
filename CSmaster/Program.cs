@@ -3146,7 +3146,7 @@ public class Problems
         return ans.Item1-ans.Item2;
     }
 
-    //Search in Sorted Array
+    //Search in Sorted Array1 (unique numbers)
     //TC=n(nlogb2n)
     public int SortedSearch(int[] arr, int target) 
     {
@@ -3171,6 +3171,75 @@ public class Problems
 
         }
         return -1;
+    }
+
+    //Search in Sorted Array2 (duplicates)
+    //TC=O(n/2)
+    public bool Search2(int[] nums, int target)
+    {
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
+        while (low <= high)
+        {
+            mid = (low + high) / 2;
+            if (nums[mid] == target) return true;
+            if (nums[low] == nums[mid] && nums[mid] == nums[high])
+            {
+                low += 1;
+                high -= 1;
+                continue;
+            }
+            //left sorted
+            if (nums[low] <= nums[mid])
+            {
+                //check values are present or not 
+                if (nums[low] <= target && target <= nums[mid])
+                {
+                    high = mid - 1;
+                }
+                else
+                    low = mid + 1;
+            }
+            //right sorted
+            else
+            {
+                //check values is present or not
+                if (nums[mid] <= target && target <= nums[high])
+                {
+                    low = mid + 1;
+                }
+                else
+                    high = mid - 1;
+            }
+        }
+        return false;
+    }
+
+    public int FindMin(int[] nums)
+    {
+        int n = nums.Length;
+        int low = 0, high = 0, ans = int.MaxValue;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            //if array is already sorted then take the min and break no need of further Binary search
+            if (nums[low] <= nums[high])
+            {
+                ans = Math.Min(ans, nums[low]);
+                break;
+            }
+            if (nums[low] <= nums[mid])
+            {
+                ans = Math.Min(ans, nums[low]);
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+                ans = Math.Min(ans, nums[mid]);
+            }
+        }
+        return ans;
     }
 
 
