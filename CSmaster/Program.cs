@@ -3218,7 +3218,7 @@ public class Problems
     public int FindMin(int[] nums)
     {
         int n = nums.Length;
-        int low = 0, high = 0, ans = int.MaxValue;
+        int low = 0, high = n-1, ans = int.MaxValue;
         while (low <= high)
         {
             int mid = (low + high) / 2;
