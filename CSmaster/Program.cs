@@ -3215,6 +3215,8 @@ public class Problems
         return false;
     }
 
+    //Find the minimum in an rotated array
+    //TC=O(nlogb2n)
     public int FindMin(int[] nums)
     {
         int n = nums.Length;
@@ -3242,6 +3244,145 @@ public class Problems
         return ans;
     }
 
+    //Find how many times array is rotated
+    //TC=O(nlogb2n)
+    public int RotatedTimes(int[] nums) 
+    {
+        int n=nums.Length;
+        int low = 0, high = n - 1,ans=int.MaxValue,ind=0;
+        while (low <= high) 
+        {
+            int mid = (low + high) / 2;
+            //if array is already sorted then take the min and break no need of further Binary search
+            if (nums[low] <= nums[high])
+            {
+                if (nums[low] < ans) 
+                {
+                    ind = low;
+                    ans = nums[low];
+                } 
+                break;
+            }
+            if (nums[low] <= nums[mid])
+            {
+                if (nums[low] < ans)
+                {
+                    ind = low;
+                    ans = nums[low];
+                }
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+                if (nums[mid] < ans)
+                {
+                    ind = mid;
+                    ans = nums[mid];
+                }
+                ind = mid;
+            }
+        }
+        return ind;
+    }
+
+    //Find the single element in an array
+    //Brute
+    //TC=O(n)
+    public int SingleElementB(int[] arr) 
+    {
+        int n=arr.Length;
+        int ans = 0;
+        if (n == 1) return arr[0];
+        //checking first element 
+        if (arr[0] != arr[1]) return arr[0];
+        //checking the second element 
+        if (arr[n - 1] != arr[n - 2]) return arr[n - 1];
+
+        for (int i = 1; i < n - 1; i ++) 
+        {
+            if (arr[i] != arr[i - 1] && arr[i] != arr[i + 1]) return arr[i];
+        }
+        return 0;
+    }
+
+    //Find the peak element =>arr[i-1]<arr[i]>arr[i+1]
+    //TC=O(n)
+    public int PeakElement(int[] nums) 
+    {
+        int n=nums.Length;
+        for (int i = 0; i < n; i++) 
+        {
+            if (i == 0 || nums[i] > nums[i] && i == n - 1 || nums[i] > nums[i + 1]) 
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    //Binary Search
+    //TC=O(n log base2 n)
+    public int FindPeakElement(int[] nums)
+    {
+        int n = nums.Length;
+        if (n == 1) return 0;
+        if (nums[0] > nums[1]) return 0;
+        if (nums[n - 1] > nums[n - 2]) return n - 1;
+        int low = 1, high = n - 2;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1])
+            {
+                return mid;
+            }
+            else if (nums[mid] > nums[mid - 1]) low = mid + 1;
+            else high = mid - 1;
+        }
+        return -1;
+    }
+
+    public int sqrtofn(long n) 
+    {
+        long low = 1, high = n;
+        while (low <= high) 
+        {
+            long mid = (low + high) / 2;
+            long val = mid * mid;
+            if (val >= high ) high = mid - 1;
+            else low = mid+1;
+        }
+        return (int)high;
+    }
+
+    //return 1 if ==mid
+    //return 0 if <mid
+    //return 2 if >mid
+    public int multi(int mid, int n,int m) 
+    {
+        long ans = 1;
+        for (int i = 1; i <= n; i++) 
+        {
+            ans = ans * mid;
+            if (ans > m) return 2;
+        }
+        if (ans == mid) return 1;
+        return 0;
+    }
+    //TC=O(nlog(base2)N*nlodb2n)
+    public int nRootofm(int n, int m) 
+    {
+        int low = 1, high = m;
+        while (low <= high) 
+        {
+            int mid = (low + high) / 2;
+            if (multi(mid, n, m) == 1) return mid;
+            else if(multi(mid, n, m)==2) high = mid-1;
+            else low = mid+1;
+        }
+        return -1;
+    }
 
     #endregion Binary Search
 }
