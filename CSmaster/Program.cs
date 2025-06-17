@@ -2960,12 +2960,12 @@ public class Problems
 
     //Lower Bound
     //TC=O(log(base2)n) SC=O(1)
-    public int LowerBound(int[] nums,int x) 
+    public int LowerBound(int[] nums, int x)
     {
-        int n= nums.Length;
-        int low=0,high= n - 1,mid = 0 ;
+        int n = nums.Length;
+        int low = 0, high = n - 1, mid = 0;
         int ans = n;
-        while (low <= high) 
+        while (low <= high)
         {
             mid = (low + high) / 2;
             if (nums[mid] >= x)
@@ -3031,7 +3031,7 @@ public class Problems
             if (nums[mid] <= x)
             {
                 ans = nums[mid];
-                low= mid - 1;
+                low = mid - 1;
             }
             else high = mid - 1;
         }
@@ -3059,17 +3059,17 @@ public class Problems
 
     //First and Last Occurances
     //Brute TC=O(n)
-    public int[] fandloccurance(int[] nums, int x) 
+    public int[] fandloccurance(int[] nums, int x)
     {
         int n = nums.Length;
         int first = -1, last = -1;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            if (nums[i] == x) 
+            if (nums[i] == x)
             {
                 first = i;
             }
-            last= i;
+            last = i;
         }
         return new int[] { first, last };
     }
@@ -3092,14 +3092,14 @@ public class Problems
 
     //Only Binary Search
     //TC=n(logb2n)
-    public int firstOccurance(int[] nums, int target) 
+    public int firstOccurance(int[] nums, int target)
     {
         int n = nums.Length;
         int fo = -1;
         int low = 0, high = n - 1, mid = 0;
-        while (low <= high) 
+        while (low <= high)
         {
-            mid=(low+high)/2;
+            mid = (low + high) / 2;
             if (nums[mid] >= target)
             {
                 fo = mid;
@@ -3121,7 +3121,7 @@ public class Problems
             {
                 lo = mid;
                 low = mid + 1;
-                
+
             }
             else
                 high = mid - 1;
@@ -3129,30 +3129,30 @@ public class Problems
         return lo;
     }
 
-    public Tuple<int,int> SearchRangeM2(int[] nums, int target)
+    public Tuple<int, int> SearchRangeM2(int[] nums, int target)
     {
         int n = nums.Length;
-        int first=firstOccurance(nums, target);
-        if (first == -1) return new Tuple<int, int>(-1,-1);
-        int last=LastOccurance(nums, target);
-        return new Tuple<int,int>(first, last);
+        int first = firstOccurance(nums, target);
+        if (first == -1) return new Tuple<int, int>(-1, -1);
+        int last = LastOccurance(nums, target);
+        return new Tuple<int, int>(first, last);
     }
     //Number of occurance
-    public int countOccurance(int[] arr,int target) 
+    public int countOccurance(int[] arr, int target)
     {
         int count = 0;
         Tuple<int, int> ans = SearchRangeM2(arr, target);
         if (ans.Item1 == -1) return 0;
-        return ans.Item1-ans.Item2;
+        return ans.Item1 - ans.Item2;
     }
 
     //Search in Sorted Array1 (unique numbers)
     //TC=n(nlogb2n)
-    public int SortedSearch(int[] arr, int target) 
+    public int SortedSearch(int[] arr, int target)
     {
         int n = arr.Length;
         int low = 0, high = n - 1, mid = 0;
-        while (low <= high) 
+        while (low <= high)
         {
             mid = (low + high) / 2;
             if (arr[mid] == target) return mid;
@@ -3167,7 +3167,7 @@ public class Problems
             else
                 //tell whether it lies between low to mid
                 if (arr[mid] <= target && target <= arr[high]) low = mid + 1;
-                else high = mid - 1;
+            else high = mid - 1;
 
         }
         return -1;
@@ -3220,7 +3220,7 @@ public class Problems
     public int FindMin(int[] nums)
     {
         int n = nums.Length;
-        int low = 0, high = n-1, ans = int.MaxValue;
+        int low = 0, high = n - 1, ans = int.MaxValue;
         while (low <= high)
         {
             int mid = (low + high) / 2;
@@ -3246,21 +3246,21 @@ public class Problems
 
     //Find how many times array is rotated
     //TC=O(nlogb2n)
-    public int RotatedTimes(int[] nums) 
+    public int RotatedTimes(int[] nums)
     {
-        int n=nums.Length;
-        int low = 0, high = n - 1,ans=int.MaxValue,ind=0;
-        while (low <= high) 
+        int n = nums.Length;
+        int low = 0, high = n - 1, ans = int.MaxValue, ind = 0;
+        while (low <= high)
         {
             int mid = (low + high) / 2;
             //if array is already sorted then take the min and break no need of further Binary search
             if (nums[low] <= nums[high])
             {
-                if (nums[low] < ans) 
+                if (nums[low] < ans)
                 {
                     ind = low;
                     ans = nums[low];
-                } 
+                }
                 break;
             }
             if (nums[low] <= nums[mid])
@@ -3289,9 +3289,9 @@ public class Problems
     //Find the single element in an array
     //Brute
     //TC=O(n)
-    public int SingleElementB(int[] arr) 
+    public int SingleElementB(int[] arr)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int ans = 0;
         if (n == 1) return arr[0];
         //checking first element 
@@ -3299,7 +3299,7 @@ public class Problems
         //checking the second element 
         if (arr[n - 1] != arr[n - 2]) return arr[n - 1];
 
-        for (int i = 1; i < n - 1; i ++) 
+        for (int i = 1; i < n - 1; i++)
         {
             if (arr[i] != arr[i - 1] && arr[i] != arr[i + 1]) return arr[i];
         }
@@ -3308,12 +3308,12 @@ public class Problems
 
     //Find the peak element =>arr[i-1]<arr[i]>arr[i+1]
     //TC=O(n)
-    public int PeakElement(int[] nums) 
+    public int PeakElement(int[] nums)
     {
-        int n=nums.Length;
-        for (int i = 0; i < n; i++) 
+        int n = nums.Length;
+        for (int i = 0; i < n; i++)
         {
-            if (i == 0 || nums[i] > nums[i] && i == n - 1 || nums[i] > nums[i + 1]) 
+            if (i == 0 || nums[i] > nums[i] && i == n - 1 || nums[i] > nums[i + 1])
             {
                 return i;
             }
@@ -3343,15 +3343,15 @@ public class Problems
         return -1;
     }
 
-    public int sqrtofn(long n) 
+    public int sqrtofn(long n)
     {
         long low = 1, high = n;
-        while (low <= high) 
+        while (low <= high)
         {
             long mid = (low + high) / 2;
             long val = mid * mid;
-            if (val >= high ) high = mid - 1;
-            else low = mid+1;
+            if (val >= high) high = mid - 1;
+            else low = mid + 1;
         }
         return (int)high;
     }
@@ -3359,10 +3359,10 @@ public class Problems
     //return 1 if ==mid
     //return 0 if <mid
     //return 2 if >mid
-    public int multi(int mid, int n,int m) 
+    public int multi(int mid, int n, int m)
     {
         long ans = 1;
-        for (int i = 1; i <= n; i++) 
+        for (int i = 1; i <= n; i++)
         {
             ans = ans * mid;
             if (ans > m) return 2;
@@ -3371,18 +3371,187 @@ public class Problems
         return 0;
     }
     //TC=O(nlog(base2)N*nlodb2n)
-    public int nRootofm(int n, int m) 
+    public int nRootofm(int n, int m)
     {
         int low = 1, high = m;
-        while (low <= high) 
+        while (low <= high)
         {
             int mid = (low + high) / 2;
             if (multi(mid, n, m) == 1) return mid;
-            else if(multi(mid, n, m)==2) high = mid-1;
-            else low = mid+1;
+            else if (multi(mid, n, m) == 2) high = mid - 1;
+            else low = mid + 1;
         }
         return -1;
     }
+
+    //koko eating banana
+    //Brute solution
+    public int kokoprobBrute(List<int> piles, int h)
+    {
+        int maxInteger = largest(piles);
+        int timetaken = 0;
+        for (int i = 0; i < maxInteger; i++)
+        {
+            timetaken = timet(piles, i);
+            if (timetaken <= h) break;
+        }
+        return timetaken;
+    }
+
+    public int timet(List<int> arr, int i)
+    {
+        int timetaken = 0;
+        int n = arr.Count;
+        for (int j = 0; j < n; j++)
+        {
+            timetaken = arr[j] / i;
+        }
+        return timetaken;
+    }
+
+
+    //Binary Search
+
+    //Maximum number in an array
+    public int MaxInteger(int[] arr)
+    {
+        int max = int.MinValue;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i] > max)
+                max = arr[i];
+        }
+        return max;
+    }
+
+    public int timetak(int[] arr, int mid)
+    {
+        int timetaken = 0;
+        int n = arr.Length;
+        for (int j = 0; j < n; j++)
+        {
+            timetaken += (int)Math.Ceiling((double)arr[j] / (double)mid);
+        }
+        return timetaken;
+    }
+
+    public int kokoeatingBanana(int[] piles, int h)
+    {
+        int low = 1, high = MaxInteger(piles), timetaken = 0;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            timetaken = timetak(piles, mid);
+            if (timetaken <= h) high = mid - 1;
+            else low = mid;
+        }
+        return low;
+    }
+
+
+    //No of days required to make m bouqets for k adjacent days 
+    //Brute TC=O(max-min)*N
+    public bool porOrNot(int[] bloomdays, int day, int m, int k)
+    {
+        int n=bloomdays.Length;
+        int cnt = 0, noofbouquets = 0;
+        for (int i = 0; i < n - 1; i++) 
+        {
+            if (bloomdays[i] <= day)
+            {
+                cnt++;
+            }
+            else 
+            {
+                noofbouquets += (cnt / k);
+                cnt = 0;
+            }
+        }
+        noofbouquets += (cnt / k);
+        if (noofbouquets == k) return true;
+        else return false;
+    }
+    public int minbloomday(int[] bloomsday,int m,int k) 
+    {
+        int n=bloomsday.Length;
+        int min = 0,max=MaxInteger(bloomsday);
+        if ((m * n) < k) return - 1;
+        for (int i = min; i <= max; i++) 
+        {
+            if (porOrNot(bloomsday, i, m, k)) 
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //Optimal binary Search
+    //TC=O(N * (nlog base2 (max-min)))
+    public int minbloomdaybs(int[] bloomsday, int m, int k) 
+    {
+        int n=bloomsday.Length;
+        long val = (m * 1L * k * 1L);
+        if (val > n) return -1;
+        int low=FindMin(bloomsday),high =MaxInteger(bloomsday);
+        while (low <= high) 
+        {
+            int mid = (low+high)/2;
+            if (porOrNot(bloomsday, mid, m, k) == true)
+            {
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return low;
+    }
+
+    //Find the smallest divisor
+    //Brute solution TC=O(N)
+    public int smallestDivisorB(int[] arr, int t) 
+    {
+        int n=arr.Length;
+        int max = MaxInteger(arr), sum = 0;
+        for (int i = 1; i < max; i++) 
+        {
+            for(int j = 0; j < n - 1; j++) 
+            {
+                sum += (int)Math.Ceiling((double)arr[j] / i);
+                if (sum <= t) return i;
+            }
+            
+        }
+        return -1;
+    }
+
+    //Binary Search - Optimal
+    //TC=O(lod base 2 * N) SC=O(1)
+    public int sumOfdiv(int[] arr, int m) 
+    {
+        int n=arr.Length;
+        int sum = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            sum += (int)Math.Ceiling((double)arr[i] / (double)m);
+        }
+        return sum;
+    }
+    public int smallestDivisor(int[] nums, int t) 
+    {
+        int n=nums.Length;
+        if (n > t) return -1;
+        int low = 1,high =MaxInteger(nums);
+        while (low <= high) 
+        {
+            int mid = (low + high) / 2;
+            if (sumOfdiv(nums, mid) <= t) high = mid - 1;
+            else low = mid + 1;
+        }
+        return low;
+        
+
+    }
+
 
     #endregion Binary Search
 }
