@@ -3453,15 +3453,15 @@ public class Problems
     //Brute TC=O(max-min)*N
     public bool porOrNot(int[] bloomdays, int day, int m, int k)
     {
-        int n=bloomdays.Length;
+        int n = bloomdays.Length;
         int cnt = 0, noofbouquets = 0;
-        for (int i = 0; i < n - 1; i++) 
+        for (int i = 0; i < n - 1; i++)
         {
             if (bloomdays[i] <= day)
             {
                 cnt++;
             }
-            else 
+            else
             {
                 noofbouquets += (cnt / k);
                 cnt = 0;
@@ -3471,14 +3471,14 @@ public class Problems
         if (noofbouquets == k) return true;
         else return false;
     }
-    public int minbloomday(int[] bloomsday,int m,int k) 
+    public int minbloomday(int[] bloomsday, int m, int k)
     {
-        int n=bloomsday.Length;
-        int min = 0,max=MaxInteger(bloomsday);
-        if ((m * n) < k) return - 1;
-        for (int i = min; i <= max; i++) 
+        int n = bloomsday.Length;
+        int min = 0, max = MaxInteger(bloomsday);
+        if ((m * n) < k) return -1;
+        for (int i = min; i <= max; i++)
         {
-            if (porOrNot(bloomsday, i, m, k)) 
+            if (porOrNot(bloomsday, i, m, k))
             {
                 return i;
             }
@@ -3488,15 +3488,15 @@ public class Problems
 
     //Optimal binary Search
     //TC=O(N * (nlog base2 (max-min)))
-    public int minbloomdaybs(int[] bloomsday, int m, int k) 
+    public int minbloomdaybs(int[] bloomsday, int m, int k)
     {
-        int n=bloomsday.Length;
+        int n = bloomsday.Length;
         long val = (m * 1L * k * 1L);
         if (val > n) return -1;
-        int low=FindMin(bloomsday),high =MaxInteger(bloomsday);
-        while (low <= high) 
+        int low = FindMin(bloomsday), high = MaxInteger(bloomsday);
+        while (low <= high)
         {
-            int mid = (low+high)/2;
+            int mid = (low + high) / 2;
             if (porOrNot(bloomsday, mid, m, k) == true)
             {
                 high = mid - 1;
@@ -3508,48 +3508,142 @@ public class Problems
 
     //Find the smallest divisor
     //Brute solution TC=O(N)
-    public int smallestDivisorB(int[] arr, int t) 
+    public int smallestDivisorB(int[] arr, int t)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int max = MaxInteger(arr), sum = 0;
-        for (int i = 1; i < max; i++) 
+        for (int i = 1; i < max; i++)
         {
-            for(int j = 0; j < n - 1; j++) 
+            for (int j = 0; j < n - 1; j++)
             {
                 sum += (int)Math.Ceiling((double)arr[j] / i);
                 if (sum <= t) return i;
             }
-            
+
         }
         return -1;
     }
 
     //Binary Search - Optimal
     //TC=O(lod base 2 * N) SC=O(1)
-    public int sumOfdiv(int[] arr, int m) 
+    public int sumOfdiv(int[] arr, int m)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int sum = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             sum += (int)Math.Ceiling((double)arr[i] / (double)m);
         }
         return sum;
     }
-    public int smallestDivisor(int[] nums, int t) 
+    public int smallestDivisor(int[] nums, int t)
     {
-        int n=nums.Length;
+        int n = nums.Length;
         if (n > t) return -1;
-        int low = 1,high =MaxInteger(nums);
-        while (low <= high) 
+        int low = 1, high = MaxInteger(nums);
+        while (low <= high)
         {
             int mid = (low + high) / 2;
             if (sumOfdiv(nums, mid) <= t) high = mid - 1;
             else low = mid + 1;
         }
         return low;
-        
 
+
+    }
+
+    //Least capacity to ship weights in D days
+    //Brute
+    public int maxcapacity(int[] weights)
+    {
+        int n = weights.Length;
+        int sum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            sum += weights[i];
+        }
+        return sum;
+    }
+    public int shipProbB(int[] weights, int totaldays)
+    {
+        int n = weights.Length;
+        int mincap = MaxInteger(weights);
+        int maxcap = maxcapacity(weights);
+        for (int i = mincap; i <= maxcap; i++)
+        {
+            int reqDays = requiredDays(weights, i);
+            if (reqDays <= days) return i;
+        }
+        return -1;
+    }
+    public int requiredDays(int[] weights, int cap)
+    {
+        int n = weights.Length;
+        int loadsum = 0, days = 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (loadsum + weights[i] > cap)
+            {
+                days++;
+                loadsum = weights[i];
+            }
+            else
+            {
+                loadsum += weights[i];
+            }
+        }
+        return days;
+    }
+
+    //Optimal with binary Search
+    //TC=log base 2(max-sum+1)
+    public int shipProb(int[] weights, int totaldays)
+    {
+        int low = MaxInteger(weights);
+        int high = maxcapacity(weights);
+
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (requiredDays(weights, mid) <= totaldays)
+            {
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return low;
+    }
+
+    //Find the Kth missing number
+    public int missingKnumB(int[] arr,int k) 
+    {
+        int n = arr.Length;
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] <= k)
+            {
+                k++;
+            }
+            else break;
+        }
+        return k;
+    }
+
+    //Binary Search
+    //O(logbase2N) SC=O(1)
+    public int missingknum(int[] arr, int k) 
+    {
+        int n=arr.Length;
+        int low = 0, high = n - 1;
+        while (low <= high)
+        {
+            int mid= (low + high) / 2;
+            int missingNum = arr[mid] - (mid + 1);
+            if (missingNum < k) low = mid + 1;
+            else high= mid - 1;
+        }
+        return high + 1 + k;
+        //or return low+k
     }
 
 
