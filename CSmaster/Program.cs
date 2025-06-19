@@ -3694,6 +3694,7 @@ public class Problems
     }
 
     //optimal
+    //TC=n(logn)+(log base2 (arr[n-1] - arr[0]))*O(n)
     public int aggressiveCows(int[] arr, int cows) 
     {
         int n= arr.Length;
