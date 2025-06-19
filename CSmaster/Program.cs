@@ -3615,10 +3615,10 @@ public class Problems
     }
 
     //Find the Kth missing number
-    public int missingKnumB(int[] arr,int k) 
+    public int missingKnumB(int[] arr, int k)
     {
         int n = arr.Length;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             if (arr[i] <= k)
             {
@@ -3631,19 +3631,83 @@ public class Problems
 
     //Binary Search
     //O(logbase2N) SC=O(1)
-    public int missingknum(int[] arr, int k) 
+    public int missingknum(int[] arr, int k)
     {
-        int n=arr.Length;
+        int n = arr.Length;
         int low = 0, high = n - 1;
         while (low <= high)
         {
-            int mid= (low + high) / 2;
+            int mid = (low + high) / 2;
             int missingNum = arr[mid] - (mid + 1);
             if (missingNum < k) low = mid + 1;
-            else high= mid - 1;
+            else high = mid - 1;
         }
         return high + 1 + k;
         //or return low+k
+    }
+
+    public int MinInteger(int[] arr)
+    {
+        int n = arr.Length;
+        int minNum = int.MaxValue;
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] < minNum)
+            {
+                minNum = arr[i];
+            }
+        }
+        return minNum;
+    }
+    //Aggresive Cows
+    public bool canPlacecow(int[] arr, int dist, int cows)
+    {
+        int n = arr.Length;
+        int cntcows = 1, lastcow = arr[0];
+        for (int i = 1; i < n; i++)
+        {
+            if (arr[i] - lastcow >= dist)
+            {
+                cntcows++;
+                lastcow = arr[i];
+            }
+        }
+        if (cntcows >= cows) return true;
+        else return false;
+    }
+    //brute
+    public int aggressiveCowsB(int[] arr, int cows)
+    {
+        Array.Sort(arr);
+        int min = MinInteger(arr);
+        int max = MaxInteger(arr);
+        for (int i = 1; i < (max - min); i++)
+        {
+            if (canPlacecow(arr, i, cows))
+            {
+                continue;
+            }
+            else return (i - 1);
+        }
+        return -1;
+
+    }
+
+    //optimal
+    public int aggressiveCows(int[] arr, int cows) 
+    {
+        int n= arr.Length;
+        int low = 1, high = arr[n-1] - arr[0];
+        while (low <= high) 
+        {
+            int mid = (low + high) / 2;
+            if (canPlacecow(arr, mid, cows) == true)
+            {
+                low = mid + 1;
+            }
+            else high = mid-1;
+        } 
+        return high;
     }
 
 
