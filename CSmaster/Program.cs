@@ -3390,7 +3390,7 @@ public class Problems
     {
         int maxInteger = largest(piles);
         int timetaken = 0;
-        for (int i = 0; i < maxInteger; i++)
+        for (int i = 1; i < maxInteger; i++)
         {
             timetaken = timet(piles, i);
             if (timetaken <= h) break;
@@ -3572,7 +3572,7 @@ public class Problems
         for (int i = mincap; i <= maxcap; i++)
         {
             int reqDays = requiredDays(weights, i);
-            if (reqDays <= days) return i;
+            if (reqDays <= totaldays) return i;
         }
         return -1;
     }
@@ -3695,21 +3695,230 @@ public class Problems
 
     //optimal
     //TC=n(logn)+(log base2 (arr[n-1] - arr[0]))*O(n)
-    public int aggressiveCows(int[] arr, int cows) 
+    public int aggressiveCows(int[] arr, int cows)
     {
-        int n= arr.Length;
-        int low = 1, high = arr[n-1] - arr[0];
-        while (low <= high) 
+        int n = arr.Length;
+        int low = 1, high = arr[n - 1] - arr[0];
+        while (low <= high)
         {
             int mid = (low + high) / 2;
             if (canPlacecow(arr, mid, cows) == true)
             {
                 low = mid + 1;
             }
-            else high = mid-1;
-        } 
+            else high = mid - 1;
+        }
         return high;
     }
+
+    //Allocation of Books 
+    //Brute - Linear Search
+    public int MaxPages(int[] arr)
+    {
+        int n = arr.Length, sum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            sum += arr[i];
+        }
+        return sum;
+    }
+    public int cntStudent(int[] arr, int pages)
+    {
+        int n = arr.Length;
+        int student = 1, pagesStudent = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (pagesStudent + arr[i] <= pages)
+            {
+                pagesStudent += arr[i];
+            }
+            else
+            {
+                student++;
+                pagesStudent = arr[i];
+            }
+        }
+        return student;
+    }
+    public int allocBooksLS(int[] arr, int m)
+    {
+        int n = arr.Length;
+        int low = MaxInteger(arr);
+        int high = MaxPages(arr);
+        if (m > n) return -1;
+        for (int i = low; i <= high; i++)
+        {
+            if (cntStudent(arr, i) == m) return i;
+            else continue;
+        }
+        return -1;
+    }
+
+    public int allocBooksBS(int[] arr, int m)
+    {
+        int n = arr.Length;
+        int low = MaxInteger(arr);
+        int high = MaxPages(arr);
+        if (m > n) return -1;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (cntStudent(arr, mid) <= m)
+            {
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return low;
+    }
+
+    //Minimize the maximum gas station 
+    //Brute sln TC=O(K*n)*n
+    public int maxgasStation(int[] arr, int k)
+    {
+        int n = arr.Length;
+        int maxiSection = -1;
+        int maxIndex = -1;
+        int[] tsection = new int[n - 1];
+        for (int i = 0; i <= k; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int diff = arr[i + 1] - arr[i];
+                int sectionLengthj = diff / tsection[i] + 1;
+                if (sectionLengthj > maxiSection)
+                {
+                    maxiSection = sectionLengthj;
+                    maxIndex = i;
+                }
+            }
+            tsection[maxIndex]++;
+        }
+        //find the max ans and return
+        int maxAns = -1, sectionLength = -1;
+        for (int i = 0; i < n; i++)
+        {
+            sectionLength = (arr[i + 1] - arr[i]) / tsection[i];
+            maxAns = Math.Max(maxAns, sectionLength);
+        }
+        return maxAns;
+
+    }
+
+    //Optimal
+    public double masdisgasstation(int[] arr, int k)
+    {
+        int n = arr.Length;
+        double low = 0, high = arr[n - 1] - arr[0], eps = 1e-6;
+        while ((high - low) > eps)
+        {
+            double mid = (high + low) / 2;
+            double cnt = cntStudent(arr, (int)mid);
+            if (cnt > k) low = mid;
+            else high = mid;
+        }
+        return high;
+    }
+    public double cntStation(int[] arr, double dist)
+    {
+        int n = arr.Length;
+        double cnt = 0;
+        for (int i = 1; i < n; i++)
+        {
+            double numberinbtw = (arr[i - 1] - arr[i]) / dist;
+            if ((arr[i - 1] - arr[i]) == numberinbtw * dist)
+            {
+                numberinbtw--;
+            }
+            cnt += numberinbtw;
+        }
+        return cnt;
+    }
+
+    //Find the median of two array
+    //TC=O(n1+n2)
+    public double medianBr(int[] arr1, int[] arr2)
+    {
+        int n1 = arr1.Length;
+        int n2 = arr2.Length;
+        List<double> list = new List<double>();
+        int i = 0, j = 0;
+        while (i < n1 && j < n2)
+        {
+            if (arr1[i] < arr2[j])
+            {
+                list.Add(arr1[(int)i]);
+                i++;
+            }
+            else
+            {
+                list.Add(arr2[j]);
+                j++;
+            }
+        }
+        while (i < n1)
+        {
+            list.Add(arr1[i]);
+            i++;
+        }
+        while (j < n1)
+        {
+            list.Add(arr2[j]);
+            j++;
+        }
+        int n = n1 + n2;
+        if (n % 2 == 1) { return list[n / 2]; }
+        else return (list[n / 2 - 1] + list[n / 2]) / 2.0;
+
+    }
+
+    //Better
+    public double medianBet(int[] arr1, int[] arr2)
+    {
+        int n1 = arr1.Length;
+        int n2 = arr2.Length;
+        int n = (n1 + n2) / 2;
+        double cnt = 0;
+        double ind1 = n / 2;
+        double ind2 = (n / 2) - 1;
+        int i = 0, j = 0;
+        while (i < n1 && i < n2)
+        {
+            if (arr1[i] < arr1[j])
+            {
+                if (cnt == ind1) ind1 = arr1[i];
+                if (cnt == ind2) ind2 = arr1[i];
+                cnt++;
+                i++;
+            }
+            else
+            {
+                if (cnt == ind1) ind1 = arr2[j];
+                if (cnt == ind2) ind2 = arr2[j];
+                cnt++;
+                j++;
+            }
+        }
+        while (i < n1)
+        {
+            if (cnt == ind1) ind1 = arr1[i];
+            if (cnt == ind2) ind2 = arr1[i];
+            cnt++;
+            i++;
+        }
+        while (j < n2)
+        {
+            if (cnt == ind1) ind1 = arr2[j];
+            if (cnt == ind2) ind2 = arr2[j];
+            cnt++;
+            j++;
+        }
+        if ((ind1 / ind2) % 2 == 1) return ind2;
+        else return (double)((double)(ind1 + ind2)) / 2.0;
+    }
+
+
+
 
 
     #endregion Binary Search
