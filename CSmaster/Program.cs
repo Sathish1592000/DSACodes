@@ -3917,7 +3917,75 @@ public class Problems
         else return (double)((double)(ind1 + ind2)) / 2.0;
     }
 
-
+    //Optimal - BS
+    //TC=O(min(logn))
+    public double medianBS(int[] arr1, int[] arr2) 
+    {
+        int n1 = arr1.Length;
+        int n2 = arr2.Length;
+        //always take arr1 as small for reducing time complexity
+        if (n1 > n2) medianBS(arr2, arr1);
+        int low = 0, high = n1;
+        int left = (n1 + n2 + 1) / 2;
+        int n = n1 + n2;
+        while (low <= high) 
+        {
+            int mid1 = (low + high) >> 1;
+            int mid2 = left - mid1;
+            int l1 = int.MinValue,l2=int.MinValue;
+            int r1 = int.MaxValue,r2= int.MaxValue;
+            //find l1 ,l2 amd r1 ,r2 from the formula 
+            if (mid1 < n1) r1 = arr1[mid1];//in this case mid1 should be below size of an arr1
+            if (mid2 < n2) r2 = arr2[mid2];//in this case mid2 should be below size of an arr2
+            if (mid1-1 >=0) l1 = arr1[mid1-1];//mid1 should be greater than 0
+            if(mid2-1 >=0) l2 = arr2[mid2-1];//mid2 should bne greater than 0
+            //condition for getting answer
+            if (l1 <= r2 && l2 <= r1)
+            {
+                if (n%2 == 1) return Math.Max(l1, l2);
+                else return (double)(Math.Max(l1, l2) + (double)Math.Min(r1, r2)) / 2.0;
+            }
+            //move the mid point on based on how many possible values i can pick from left and right
+            else if (l1 > r2) high = mid1 - 1;
+            else if(l2>r1) low = mid1 - 1;
+        }
+        return 0;
+    }
+    //Optimal - BS
+    //TC=O(min(logn))
+    public double FindKthelement(int[] arr1, int[] arr2,int k)
+    {
+        int n1 = arr1.Length;
+        int n2 = arr2.Length;
+        //always take arr1 as small for reducing time complexity
+        if (n1 > n2) medianBS(arr2, arr1);
+        //FOR low = if we pick 0 from arr1 and then we need to pick remaining from arr2,
+        //lets say array2 is lesser than k then it will fail so we need minimum of (k-n2) from the array1
+        //FOR high = if we have very less k element then we need not to take n1 insteads we can reduce to k so min of (k,n1)
+        int low = Math.Min((k-n2),0), high = Math.Max(k, n1);
+        int left = k;
+        while (low <= high)
+        {
+            int mid1 = (low + high) >> 1;
+            int mid2 = left - mid1;
+            int l1 = int.MinValue, l2 = int.MinValue;
+            int r1 = int.MaxValue, r2 = int.MaxValue;
+            //find l1 ,l2 amd r1 ,r2 from the formula 
+            if (mid1 < n1) r1 = arr1[mid1];//in this case mid1 should be below size of an arr1
+            if (mid2 < n2) r2 = arr2[mid2];//in this case mid2 should be below size of an arr2
+            if (mid1 - 1 >= 0) l1 = arr1[mid1 - 1];//mid1 should be greater than 0
+            if (mid2 - 1 >= 0) l2 = arr2[mid2 - 1];//mid2 should bne greater than 0
+            //condition for getting answer
+            if (l1 <= r2 && l2 <= r1)
+            {
+                return Math.Max(l1, l2);   
+            }
+            //move the mid point on based on how many possible values i can pick from left and right
+            else if (l1 > r2) high = mid1 - 1;
+            else if (l2 > r1) low = mid1 - 1;
+        }
+        return 0;
+    }
 
 
 
