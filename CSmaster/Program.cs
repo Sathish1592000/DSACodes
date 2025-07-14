@@ -3919,7 +3919,7 @@ public class Problems
 
     //Optimal - BS
     //TC=O(min(logn))
-    public double medianBS(int[] arr1, int[] arr2) 
+    public double medianBS(int[] arr1, int[] arr2)
     {
         int n1 = arr1.Length;
         int n2 = arr2.Length;
@@ -3928,32 +3928,32 @@ public class Problems
         int low = 0, high = n1;
         int left = (n1 + n2 + 1) / 2;
         int n = n1 + n2;
-        while (low <= high) 
+        while (low <= high)
         {
             int mid1 = (low + high) >> 1;
             int mid2 = left - mid1;
-            int l1 = int.MinValue,l2=int.MinValue;
-            int r1 = int.MaxValue,r2= int.MaxValue;
+            int l1 = int.MinValue, l2 = int.MinValue;
+            int r1 = int.MaxValue, r2 = int.MaxValue;
             //find l1 ,l2 amd r1 ,r2 from the formula 
             if (mid1 < n1) r1 = arr1[mid1];//in this case mid1 should be below size of an arr1
             if (mid2 < n2) r2 = arr2[mid2];//in this case mid2 should be below size of an arr2
-            if (mid1-1 >=0) l1 = arr1[mid1-1];//mid1 should be greater than 0
-            if(mid2-1 >=0) l2 = arr2[mid2-1];//mid2 should bne greater than 0
+            if (mid1 - 1 >= 0) l1 = arr1[mid1 - 1];//mid1 should be greater than 0
+            if (mid2 - 1 >= 0) l2 = arr2[mid2 - 1];//mid2 should bne greater than 0
             //condition for getting answer
             if (l1 <= r2 && l2 <= r1)
             {
-                if (n%2 == 1) return Math.Max(l1, l2);
+                if (n % 2 == 1) return Math.Max(l1, l2);
                 else return (double)(Math.Max(l1, l2) + (double)Math.Min(r1, r2)) / 2.0;
             }
             //move the mid point on based on how many possible values i can pick from left and right
             else if (l1 > r2) high = mid1 - 1;
-            else if(l2>r1) low = mid1 - 1;
+            else if (l2 > r1) low = mid1 - 1;
         }
         return 0;
     }
     //Optimal - BS
     //TC=O(min(logn))
-    public double FindKthelement(int[] arr1, int[] arr2,int k)
+    public double FindKthelement(int[] arr1, int[] arr2, int k)
     {
         int n1 = arr1.Length;
         int n2 = arr2.Length;
@@ -3962,7 +3962,7 @@ public class Problems
         //FOR low = if we pick 0 from arr1 and then we need to pick remaining from arr2,
         //lets say array2 is lesser than k then it will fail so we need minimum of (k-n2) from the array1
         //FOR high = if we have very less k element then we need not to take n1 insteads we can reduce to k so min of (k,n1)
-        int low = Math.Min((k-n2),0), high = Math.Max(k, n1);
+        int low = Math.Min((k - n2), 0), high = Math.Max(k, n1);
         int left = k;
         while (low <= high)
         {
@@ -3978,7 +3978,7 @@ public class Problems
             //condition for getting answer
             if (l1 <= r2 && l2 <= r1)
             {
-                return Math.Max(l1, l2);   
+                return Math.Max(l1, l2);
             }
             //move the mid point on based on how many possible values i can pick from left and right
             else if (l1 > r2) high = mid1 - 1;
@@ -3986,6 +3986,102 @@ public class Problems
         }
         return 0;
     }
+
+    //BS on 2D Arrays
+    //find the maximum 1's in 2D array
+    //Brute 
+    public int Max1sB(int[][] matrix)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+
+        int maxCount = -1; int index = -1;
+        for (int i = 0; i < n; i++)
+        {
+            int cntMax = 0;
+            for (int j = 0; j < m; j++)
+            {
+                cntMax += matrix[i][j];
+            }
+            if (cntMax > maxCount)
+            {
+                maxCount = cntMax;
+                index = i;
+            }
+
+        }
+        return index;
+    }
+
+    //Binary Search (lower Bound) 
+    //TC = n*(log  base2m)
+    public int Max1sBS(int[][] matrix)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        int maxCount = 0;
+        int index = -1;
+        int cntMax = 0;
+        for (int i = 0; i < n; i++)
+        {
+            cntMax = m - lowerBound(matrix[0], n, 1);
+        }
+        if (cntMax > maxCount)
+        {
+            maxCount = cntMax;
+            index = i;
+        }
+        return index;
+
+    }
+
+    public int lowerBound(int[] row, int size, int num)
+    {
+        int low = 0, high = size;
+        int ans = 0;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (mid >= num)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
+
+    //Search in 2D Matrix
+    //optimal approach O(n* logbase2*m)
+    public int findX(int[] row, int target)
+    {
+        int low = 0, high = row.Length - 1, ans = -1;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (row[mid] == target) return row[mid];//alt return true
+            else if (row[mid] < target)
+            {
+                low = mid + 1;
+            }
+            else high = mid - 1;
+        }
+        return ans;//return false
+    }
+    public bool SearchMatrix(int[][] matrix, int target)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        for (int i = 0; i < n; i++)
+        {
+            //another approach is if(findX(matrix[i], target)) return true;
+            int val = findX(matrix[i], target);
+            if (val == target) return true;
+        }
+        return false;
+    }
+
 
 
 
