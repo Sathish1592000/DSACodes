@@ -127,14 +127,14 @@ public class Problems
         //{
         //    Console.Write(" " + i);
         //}
-        int[] arr = new int[] { 102, 103, 104, 1, 2, 3, 4, 5, 6, 10 };
-        int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
-        int[] arr2 = new int[] { 1, 3, 4, 5 };
-        int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
-        int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
-        int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
-        int[] arr6 = new int[] { 3, 1, -2, -5, 2, -4 };
-        int[] arr7 = new int[] { 2, 3, -2, 4 };
+        //int[] arr = new int[] { 102, 103, 104, 1, 2, 3, 4, 5, 6, 10 };
+        //int[] arr1 = new int[] { 2, 2, 3, 4, 5 };
+        //int[] arr2 = new int[] { 1, 3, 4, 5 };
+        //int[] arr3 = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+        //int[] arr4 = new int[] { 0, 1, 2, 0, 0, 0, 1, 2, 1, 1, 2, 1, 2, 1 };
+        //int[] arr5 = new int[] { 2, 0, 2, 1, 1, 0 };
+        //int[] arr6 = new int[] { 3, 1, -2, -5, 2, -4 };
+        //int[] arr7 = new int[] { 2, 3, -2, 4 };
         //int low = 0;
         //int high = arr.Length - 1;
         ////prb.QuickSort(arr, low, high);
@@ -168,8 +168,8 @@ public class Problems
         //    Console.WriteLine(" " + i);
         //    }
 
-        int result1 = prb.maxProdBrt(arr7);
-        Console.WriteLine("The max sub array is : " + result1);
+        string result1 = prb.ReverseAWords("we are best");
+        Console.WriteLine("result : " + result1);
         //int result1 = prb.MaxSubarraysmallandsecondsmall(arr3);
         //Console.WriteLine("The Maximum sub array is : " + result1);
         //bool result = prb.TwoSum1(arr, 9);
@@ -4157,54 +4157,98 @@ public class Problems
     //Find the median in an 2D array
     //Optimal solution using BS
     //TC=O((log base 2 10^9)*n*log))
-    public int lowest(int[][] matrix,int n,int m) 
+    public int lowest(int[][] matrix, int n, int m)
     {
         int low = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
-            if (matrix[i][0] < low) 
+            if (matrix[i][0] < low)
             {
-                low=matrix[i][0];
+                low = matrix[i][0];
             }
         }
         return low;
     }
-    public int highest(int[][] matrix, int n, int m) 
+    public int highest(int[][] matrix, int n, int m)
     {
         int high = 0;
         for (int i = 0; i < n; i++)
         {
-            if (matrix[i][m-1] > high)
+            if (matrix[i][m - 1] > high)
             {
                 high = matrix[i][0];
             }
         }
         return high;
     }
-    public int blackbox(int[][] matrix, int mid,int n,int m) 
+    public int blackbox(int[][] matrix, int mid, int n, int m)
     {
         int cnt = 0;
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++)
         {
             cnt += UpperBound(matrix[i], mid);
         }
         return cnt;
     }
-    public int Medianin2DBS(int[][] matrix) 
+    public int Medianin2DBS(int[][] matrix)
     {
         int n = matrix.Length;
         int m = matrix[0].Length;
         int req = (n * m) / 2;
-        int low = lowest(matrix,n,m);
-        int high = highest(matrix,n,m);
-        while (low <= high) 
+        int low = lowest(matrix, n, m);
+        int high = highest(matrix, n, m);
+        while (low <= high)
         {
-            int mid= (low + high) / 2;
-            int smallEquals = blackbox(matrix, mid,n,m);
-            if (smallEquals < req) low = mid + 1;
-            else high=mid-1;
+            int mid = (low + high) / 2;
+            int smallEquals = blackbox(matrix, mid, n, m);
+            if (smallEquals <= req) low = mid + 1;
+            else high = mid - 1;
         }
         return low;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////String Problems//////////////////////////////////////////////////////
+
+    //Remove outer paranthesis
+    public string RemoveOuterParanthesis(string s)
+    {
+        string ans = "";
+        int cnt = 0;
+        foreach (char c in s)
+        {
+            if (c == '(')
+            {
+                if (cnt > 0) ans += c;
+                cnt++;
+            }
+
+            else if (c == ')')
+            {
+                cnt--;
+                if (cnt > 0) ans += c;
+            }
+        }
+        return ans;
+    }
+
+    public string ReverseAWords(string s) 
+    {
+        string[] arr=new string[s.Length];
+        string ans = "";
+        int i=0;
+        foreach (char c in s) 
+        {
+            ans+= c;
+            if (c == ' ') 
+            {
+                arr[i]=ans;
+                ans = "";
+                i++;
+            }
+        }
+        arr.Reverse();
+        return arr.ToString();
     }
 
 
