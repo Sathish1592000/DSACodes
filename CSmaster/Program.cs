@@ -4053,7 +4053,7 @@ public class Problems
     }
 
     //Search in 2D Matrix
-    //optimal approach O(n* logbase2*m)
+    //Better approach O(n* logbase2*m)
     public int findX(int[] row, int target)
     {
         int low = 0, high = row.Length - 1, ans = -1;
@@ -4082,6 +4082,130 @@ public class Problems
         return false;
     }
 
+    //Optimal 
+    //TC=O(log base2n*m)
+    public bool SearcIndexF(int[][] matrix, int target)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        int low = matrix[0][0], high = matrix[n][m];
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            int row = mid / m;
+            int col = mid % m;
+            if (matrix[row][col] == target) return true;
+            else if (matrix[row][col] < target) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+
+    //Search index Problem type2
+    //optimal
+    //TC =O(n+m)
+    public bool SearchInMatrixT2(int[][] matrix, int target)
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        int row = 0, col = m - 1;
+        while (row < n && col >= 0)
+        {
+            if (matrix[row][col] == target) return true;
+            else if (matrix[row][col] < target) row++;
+            else col--;
+        }
+        return false;
+
+    }
+
+    //Find the Peak element in a 2D matrix
+    //Optimal Solution
+    //TC =O(n* log base 2 m)
+    public int maxElement(int[][] mat, int n, int m, int col)
+    {
+        int maxRow = int.MinValue;
+        int index = -1;
+        for (int i = 0; i < n; i++)
+        {
+            if (mat[i][col] > maxRow)
+            {
+                maxRow = mat[i][col];
+                index = i;
+            }
+        }
+        return index;
+    }
+    public int[] FindPeakGrid(int[][] mat)
+    {
+        int n = mat.Length;
+        int m = mat[0].Length;
+        int low = 0, high = m - 1;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            int row = maxElement(mat, n, m, mid);
+            int left = mid - 1 >= 0 ? mat[row][mid - 1] : -1;//if mid-1 is greater than 0 then take mat[row][mid-2] else -1
+            int right = mid + 1 < m ? mat[row][mid + 1] : -1;
+            if (mat[row][mid] > left && mat[row][mid] > right) return new int[] { row, mid };
+            else if (mat[row][mid] < left) high = mid - 1;
+            else low = mid + 1;
+        }
+        return new int[] { -1, -1 };
+    }
+
+    //Find the median in an 2D array
+    //Optimal solution using BS
+    //TC=O((log base 2 10^9)*n*log))
+    public int lowest(int[][] matrix,int n,int m) 
+    {
+        int low = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            if (matrix[i][0] < low) 
+            {
+                low=matrix[i][0];
+            }
+        }
+        return low;
+    }
+    public int highest(int[][] matrix, int n, int m) 
+    {
+        int high = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (matrix[i][m-1] > high)
+            {
+                high = matrix[i][0];
+            }
+        }
+        return high;
+    }
+    public int blackbox(int[][] matrix, int mid,int n,int m) 
+    {
+        int cnt = 0;
+        for (int i = 0; i < n; i++) 
+        {
+            cnt += UpperBound(matrix[i], mid);
+        }
+        return cnt;
+    }
+    public int Medianin2DBS(int[][] matrix) 
+    {
+        int n = matrix.Length;
+        int m = matrix[0].Length;
+        int req = (n * m) / 2;
+        int low = lowest(matrix,n,m);
+        int high = highest(matrix,n,m);
+        while (low <= high) 
+        {
+            int mid= (low + high) / 2;
+            int smallEquals = blackbox(matrix, mid,n,m);
+            if (smallEquals < req) low = mid + 1;
+            else high=mid-1;
+        }
+        return low;
+    }
 
 
 
